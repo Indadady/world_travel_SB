@@ -107,7 +107,6 @@
                 <div id="text-quiz-content" class="w-full"></div>
             </div>
 
-            <!-- 로딩 화면 -->
             <div id="loading" class="absolute inset-0 bg-white/95 z-20 flex flex-col items-center justify-center">
                 <div class="animate-spin rounded-full h-12 w-12 border-b-4 border-blue-600 mb-4"></div>
                 <span class="text-blue-600 font-bold text-lg">다음 여행지로 이동 중...</span>
@@ -216,14 +215,14 @@
             { name: "파나마 (Panama)", capital: "파나마시티 (Panama City)", brands: ["Panama Canal", "Copa Airlines"], lat: 8.9, lng: -79.5, zoom: 7, radius: 150000, code: "pa", videoId: "OnXI4-fCTcg" },
             { name: "볼리비아 (Bolivia)", capital: "라파스 (La Paz)", brands: ["Uyuni Salt Flat", "Llama", "Coca Tea"], lat: -16.5, lng: -68.1, zoom: 5, radius: 800000, code: "bo", videoId: "nq8NJBJqZT0" },
             { name: "미얀마 (Myanmar)", capital: "네피도 (Naypyidaw)", brands: ["Jade", "Ruby", "Bagan", "Teak"], lat: 19.7, lng: 96.1, zoom: 5, radius: 600000, code: "mm", videoId: "bpWbwMoYISk" },
-            { name: "브루나이 (Brunei)", capital: "반다르스리브가완 (Bandar Seri Begawan)", brands: ["Royal Brunei", "Oil & Gas"], lat: 4.9, lng: 114.9, zoom: 9, radius: 40000, code: "bn", videoId: "MCkyNegrwcU" }, // Updated
+            { name: "브루나이 (Brunei)", capital: "반다르스리브가완 (Bandar Seri Begawan)", brands: ["Royal Brunei", "Oil & Gas"], lat: 4.9, lng: 114.9, zoom: 9, radius: 40000, code: "bn", videoId: "MCkyNegrwcU" }, 
             
             // --- Standard Level ---
             { name: "독일 (Germany)", capital: "베를린 (Berlin)", brands: ["BMW", "Adidas"], lat: 51.1, lng: 10.4, zoom: 6, radius: 350000, code: "de", videoId: "8DEozJok3U8" },
             { name: "모로코 (Morocco)", capital: "라바트 (Rabat)", brands: ["Argan Oil", "Couscous"], lat: 31.7, lng: -7.0, zoom: 5, radius: 500000, code: "ma", videoId: "nzD3e3Qr7g8" }, 
             { name: "몽골 (Mongolia)", capital: "울란바토르 (Ulaanbaatar)", brands: ["Gobi Cashmere", "Ger"], lat: 46.8, lng: 103.8, zoom: 5, radius: 800000, code: "mn", videoId: "GdydPGQ7muI" },
             { name: "에스토니아 (Estonia)", capital: "탈린 (Tallinn)", brands: ["Skype", "Bolt"], lat: 59.4, lng: 24.7, zoom: 7, radius: 100000, code: "ee", videoId: "-3z-gH-qRyY" },
-            { name: "칠레 (Chile)", capital: "산티아고 (Santiago)", brands: ["LATAM Airlines", "Wine"], lat: -35.6, lng: -71.5, zoom: 4, radius: 1500000, code: "cl", videoId: "uq-zfnpxLSw" }, // Updated
+            { name: "칠레 (Chile)", capital: "산티아고 (Santiago)", brands: ["LATAM Airlines", "Wine"], lat: -35.6, lng: -71.5, zoom: 4, radius: 1500000, code: "cl", videoId: "uq-zfnpxLSw" }, 
             { name: "포르투갈 (Portugal)", capital: "리스본 (Lisbon)", brands: ["TAP Air", "Cork"], lat: 39.3, lng: -8.2, zoom: 7, radius: 200000, code: "pt", videoId: "fk2Onka7oBI" },
             { name: "뉴질랜드 (New Zealand)", capital: "웰링턴 (Wellington)", brands: ["Zespri", "Air New Zealand"], lat: -40.9, lng: 174.8, zoom: 5, radius: 500000, code: "nz", videoId: "fgGYNJ3f7sQ" },
             { name: "이집트 (Egypt)", capital: "카이로 (Cairo)", brands: ["EgyptAir", "Cotton"], lat: 26.8, lng: 30.8, zoom: 6, radius: 500000, code: "eg", videoId: "9kYbtuKYU-4" },
@@ -253,6 +252,35 @@
             const [koPart, rest] = fullText.split('(');
             const enPart = rest.replace(')', '').trim();
             return { ko: koPart.trim(), en: enPart };
+        }
+
+        // [New] Wikipedia Image Fetcher
+        async function fetchWikiImage(query) {
+            try {
+                // query가 빈 값이거나 undefined인 경우 대비
+                if (!query) return null;
+                
+                // 위키백과 API 호출 (썸네일 사이즈 600px 요청)
+                const url = `https://en.wikipedia.org/w/api.php?action=query&titles=${encodeURIComponent(query)}&prop=pageimages&format=json&pithumbsize=600&origin=*&redirects`;
+                
+                const res = await fetch(url);
+                const data = await res.json();
+                
+                if (!data || !data.query || !data.query.pages) return null;
+                
+                const pages = data.query.pages;
+                const pageId = Object.keys(pages)[0];
+                
+                if (pageId === "-1") return null; // 페이지 없음
+                
+                if (pages[pageId].thumbnail && pages[pageId].thumbnail.source) {
+                    return pages[pageId].thumbnail.source;
+                }
+                return null;
+            } catch (e) {
+                console.error("Wiki fetch error:", e);
+                return null;
+            }
         }
 
         function initMap() {
@@ -286,10 +314,10 @@
             }
         }
 
-        // [개선] 랜드마크 실패 시 깔끔한 전환
+        // [개선] 랜드마크 실패 시 깔끔한 전환 (User Feedback: 로딩도 함께 종료)
         function handleImageError() {
             console.warn("Landmark image failed, falling back to flag quiz");
-            // 랜드마크 실패시 플래그 모드로 전환하고, 플래그 모드 로직이 로딩 해제 담당
+            forceStopLoading(); // [NEW] 즉시 로딩 해제하여 멈춘 느낌 방지
             currentType = 'flag';
             updateDisplayForRound(); 
         }
@@ -297,7 +325,7 @@
         function nextRound() {
             if (safeTimer) clearTimeout(safeTimer);
             document.getElementById('loading').classList.remove('hidden');
-            safeTimer = setTimeout(forceStopLoading, 3000); 
+            safeTimer = setTimeout(forceStopLoading, 4000); // 4초로 조금 넉넉하게
 
             const modal = document.getElementById('video-modal');
             const iframe = document.getElementById('reward-video');
@@ -365,7 +393,7 @@
             const landmarkImg = document.getElementById('landmark-image'); 
             const quizIcon = document.getElementById('quiz-icon');
 
-            // [초기화] 이전 핸들러 제거
+            // 핸들러 초기화
             landmarkImg.onload = null;
             landmarkImg.onerror = null;
             flagImg.onload = null;
@@ -393,7 +421,6 @@
                 
                 setTimeout(() => {
                     if (!map) {
-                        console.error("Map not initialized, fallback");
                         currentType = 'flag';
                         updateDisplayForRound();
                         return;
@@ -404,7 +431,6 @@
                     const zoom = parseFloat(currentCountry.zoom);
 
                     if (isNaN(lat) || isNaN(lng)) {
-                        console.error("Invalid coordinates for:", currentCountry.name);
                         currentType = 'flag';
                         updateDisplayForRound();
                         return;
@@ -422,7 +448,6 @@
                             color: '#22c55e', fillColor: '#22c55e', fillOpacity: 0.2, radius: currentCountry.radius || 200000 
                         }).addTo(map);
                     } catch (err) {
-                        console.error("Leaflet error:", err);
                         currentType = 'flag';
                         updateDisplayForRound();
                         return;
@@ -438,15 +463,12 @@
                 descEl.textContent = "국기를 보고 정답을 맞춰보세요!";
                 flagContainer.classList.remove('hidden');
                 
-                // [안전장치] 국기 로딩 에러 처리
                 flagImg.onload = forceStopLoading;
                 flagImg.onerror = () => {
                     console.warn("Flag failed to load");
-                    forceStopLoading();
-                    flagImg.style.display = 'none'; // 숨김
-                    descEl.textContent = "국기 이미지를 불러올 수 없습니다. 이름만 보고 맞춰보세요!";
+                    forceStopLoading(); // 에러나도 로딩은 끔
+                    flagImg.src = "https://via.placeholder.com/300x200?text=Flag+Not+Found";
                 };
-                flagImg.style.display = 'block';
 
                 if (currentCountry.flagUrl) {
                     flagImg.src = currentCountry.flagUrl;
@@ -455,23 +477,36 @@
                 }
                 
             } else if (currentType === 'landmark') { 
-                badgeEl.textContent = "랜드마크 퀴즈";
+                badgeEl.textContent = "랜드마크 퀴즈 (Beta)";
                 badgeEl.className = "inline-block px-3 py-1 rounded-full text-xs font-bold text-white bg-purple-600 mb-2";
                 titleEl.textContent = "📸 이 멋진 곳은 어디일까요?";
                 descEl.textContent = `힌트: ${capitalEn}의 풍경입니다.`;
                 
                 landmarkContainer.classList.remove('hidden');
                 
-                const prompt = `famous landmark architecture of ${capitalEn} ${countryEn}, bright sunny day, 4k travel photography, realistic`;
-                const imageUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}?width=800&height=600&nologo=true&seed=${Math.random()}&model=flux`;
+                // [NEW] Wikipedia API 연동
                 
-                // [개선] 핸들러 먼저 등록 후 src 할당
                 landmarkImg.onload = () => {
-                    console.log("Landmark loaded");
+                    console.log("Wiki Image loaded");
                     forceStopLoading();
                 };
                 landmarkImg.onerror = handleImageError;
-                landmarkImg.src = imageUrl;
+
+                // 로딩 이미지 먼저 표시
+                landmarkImg.src = "https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif";
+
+                fetchWikiImage(capitalEn).then(url => {
+                    if (url) {
+                        landmarkImg.src = url;
+                    } else {
+                        // 이미지가 없으면 국기로 전환
+                        console.warn("No wiki image found for " + capitalEn);
+                        handleImageError();
+                    }
+                }).catch(e => {
+                    console.error("Wiki fetch error", e);
+                    handleImageError();
+                });
             
             } else if (currentType === 'brand') {
                 badgeEl.textContent = "키워드 퀴즈";
