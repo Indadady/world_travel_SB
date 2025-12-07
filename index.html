@@ -107,6 +107,7 @@
                 <div id="text-quiz-content" class="w-full"></div>
             </div>
 
+            <!-- 로딩 화면 -->
             <div id="loading" class="absolute inset-0 bg-white/95 z-20 flex flex-col items-center justify-center">
                 <div class="animate-spin rounded-full h-12 w-12 border-b-4 border-blue-600 mb-4"></div>
                 <span class="text-blue-600 font-bold text-lg">다음 여행지로 이동 중...</span>
@@ -211,18 +212,18 @@
             // --- Hard Level ---
             { name: "가나 (Ghana)", capital: "아크라 (Accra)", brands: ["Cocoa", "Gold", "Kente Cloth"], lat: 7.9, lng: -1.0, zoom: 6, radius: 250000, code: "gh", videoId: "wIE-CxkN5d0" },
             { name: "트리니다드 토바고 (Trinidad & Tobago)", capital: "포트오브스페인 (Port of Spain)", brands: ["Angostura", "Carnival", "Steelpan"], lat: 10.6, lng: -61.2, zoom: 8, radius: 60000, code: "tt", videoId: "fOBg4Y9HxS4" },
-            { name: "바베이도스 (Barbados)", capital: "브리지타운 (Bridgetown)", brands: ["Mount Gay Rum", "Rihanna"], lat: 13.1, lng: -59.5, zoom: 10, radius: 20000, code: "bb", videoId: "VBjUb3T_O8w" },
+            { name: "바베이도스 (Barbados)", capital: "브리지타운 (Bridgetown)", brands: ["Mount Gay Rum", "Rihanna", "Cricket"], lat: 13.1, lng: -59.5, zoom: 10, radius: 20000, code: "bb", videoId: "VBjUb3T_O8w" },
             { name: "파나마 (Panama)", capital: "파나마시티 (Panama City)", brands: ["Panama Canal", "Copa Airlines"], lat: 8.9, lng: -79.5, zoom: 7, radius: 150000, code: "pa", videoId: "OnXI4-fCTcg" },
-            { name: "볼리비아 (Bolivia)", capital: "라파스 (La Paz)", brands: ["Uyuni Salt Flat", "Llama"], lat: -16.5, lng: -68.1, zoom: 5, radius: 800000, code: "bo", videoId: "nq8NJBJqZT0" },
-            { name: "미얀마 (Myanmar)", capital: "네피도 (Naypyidaw)", brands: ["Jade", "Ruby", "Bagan"], lat: 19.7, lng: 96.1, zoom: 5, radius: 600000, code: "mm", videoId: "bpWbwMoYISk" },
-            { name: "브루나이 (Brunei)", capital: "반다르스리브가완 (Bandar Seri Begawan)", brands: ["Royal Brunei", "Oil & Gas"], lat: 4.9, lng: 114.9, zoom: 9, radius: 40000, code: "bn", videoId: "z2i8f2wTD8k" },
+            { name: "볼리비아 (Bolivia)", capital: "라파스 (La Paz)", brands: ["Uyuni Salt Flat", "Llama", "Coca Tea"], lat: -16.5, lng: -68.1, zoom: 5, radius: 800000, code: "bo", videoId: "nq8NJBJqZT0" },
+            { name: "미얀마 (Myanmar)", capital: "네피도 (Naypyidaw)", brands: ["Jade", "Ruby", "Bagan", "Teak"], lat: 19.7, lng: 96.1, zoom: 5, radius: 600000, code: "mm", videoId: "bpWbwMoYISk" },
+            { name: "브루나이 (Brunei)", capital: "반다르스리브가완 (Bandar Seri Begawan)", brands: ["Royal Brunei", "Oil & Gas"], lat: 4.9, lng: 114.9, zoom: 9, radius: 40000, code: "bn", videoId: "MCkyNegrwcU" }, // Updated
             
             // --- Standard Level ---
             { name: "독일 (Germany)", capital: "베를린 (Berlin)", brands: ["BMW", "Adidas"], lat: 51.1, lng: 10.4, zoom: 6, radius: 350000, code: "de", videoId: "8DEozJok3U8" },
             { name: "모로코 (Morocco)", capital: "라바트 (Rabat)", brands: ["Argan Oil", "Couscous"], lat: 31.7, lng: -7.0, zoom: 5, radius: 500000, code: "ma", videoId: "nzD3e3Qr7g8" }, 
             { name: "몽골 (Mongolia)", capital: "울란바토르 (Ulaanbaatar)", brands: ["Gobi Cashmere", "Ger"], lat: 46.8, lng: 103.8, zoom: 5, radius: 800000, code: "mn", videoId: "GdydPGQ7muI" },
             { name: "에스토니아 (Estonia)", capital: "탈린 (Tallinn)", brands: ["Skype", "Bolt"], lat: 59.4, lng: 24.7, zoom: 7, radius: 100000, code: "ee", videoId: "-3z-gH-qRyY" },
-            { name: "칠레 (Chile)", capital: "산티아고 (Santiago)", brands: ["LATAM Airlines", "Wine"], lat: -35.6, lng: -71.5, zoom: 4, radius: 1500000, code: "cl", videoId: "3e3hXgWj_wE" },
+            { name: "칠레 (Chile)", capital: "산티아고 (Santiago)", brands: ["LATAM Airlines", "Wine"], lat: -35.6, lng: -71.5, zoom: 4, radius: 1500000, code: "cl", videoId: "uq-zfnpxLSw" }, // Updated
             { name: "포르투갈 (Portugal)", capital: "리스본 (Lisbon)", brands: ["TAP Air", "Cork"], lat: 39.3, lng: -8.2, zoom: 7, radius: 200000, code: "pt", videoId: "fk2Onka7oBI" },
             { name: "뉴질랜드 (New Zealand)", capital: "웰링턴 (Wellington)", brands: ["Zespri", "Air New Zealand"], lat: -40.9, lng: 174.8, zoom: 5, radius: 500000, code: "nz", videoId: "fgGYNJ3f7sQ" },
             { name: "이집트 (Egypt)", capital: "카이로 (Cairo)", brands: ["EgyptAir", "Cotton"], lat: 26.8, lng: 30.8, zoom: 6, radius: 500000, code: "eg", videoId: "9kYbtuKYU-4" },
@@ -244,6 +245,15 @@
         
         let prevCountryIndex = null;
         let prevType = null;
+
+        // [Helper] 이름 분리 함수
+        function splitNamePair(fullText) {
+            if (!fullText) return { ko: "Unknown", en: "" };
+            if (!fullText.includes('(')) return { ko: fullText.trim(), en: "" };
+            const [koPart, rest] = fullText.split('(');
+            const enPart = rest.replace(')', '').trim();
+            return { ko: koPart.trim(), en: enPart };
+        }
 
         function initMap() {
             try {
@@ -276,8 +286,10 @@
             }
         }
 
+        // [개선] 랜드마크 실패 시 깔끔한 전환
         function handleImageError() {
             console.warn("Landmark image failed, falling back to flag quiz");
+            // 랜드마크 실패시 플래그 모드로 전환하고, 플래그 모드 로직이 로딩 해제 담당
             currentType = 'flag';
             updateDisplayForRound(); 
         }
@@ -332,6 +344,7 @@
 
             createOptions();
 
+            // [최후 방어]
             setTimeout(() => {
                 forceStopLoading();
             }, 4000);
@@ -352,32 +365,33 @@
             const landmarkImg = document.getElementById('landmark-image'); 
             const quizIcon = document.getElementById('quiz-icon');
 
+            // [초기화] 이전 핸들러 제거
             landmarkImg.onload = null;
             landmarkImg.onerror = null;
             flagImg.onload = null;
+            flagImg.onerror = null;
 
             mapContainer.classList.add('hidden');
             flagContainer.classList.add('hidden');
             landmarkContainer.classList.add('hidden'); 
             textContainer.classList.add('hidden');
 
-            const safeName = currentCountry.name || "Unknown";
-            const safeCapital = currentCountry.capital || "Unknown";
-            
-            const capitalKo = safeCapital.includes('(') ? safeCapital.split('(')[0] : safeCapital;
-            const capitalEn = safeCapital.includes('(') ? safeCapital.split('(')[1].replace(')', '') : safeCapital;
-            const countryEn = safeName.includes('(') ? safeName.split('(')[1].replace(')', '') : 'Country';
+            const namePair = splitNamePair(currentCountry.name);
+            const capitalPair = splitNamePair(currentCountry.capital);
+            const countryKo = namePair.ko;
+            const countryEn = namePair.en || 'Country';
+            const capitalKo = capitalPair.ko;
+            const capitalEn = capitalPair.en || capitalPair.ko;
             const safeBrands = currentCountry.brands || [];
 
             if (currentType === 'map') {
-                badgeEl.textContent = "지도 퀴즈";
+                badgeEl.textContent = "지도 퀴즈 (난이도 상)";
                 badgeEl.className = "inline-block px-3 py-1 rounded-full text-xs font-bold text-white bg-green-600 mb-2";
                 titleEl.textContent = "🌍 이 나라는 어디일까요?";
                 descEl.textContent = "초록색 영역을 보고 나라를 맞춰보세요!";
                 mapContainer.classList.remove('hidden');
                 
                 setTimeout(() => {
-                    // [안전장치 1] 지도 객체 확인
                     if (!map) {
                         console.error("Map not initialized, fallback");
                         currentType = 'flag';
@@ -385,7 +399,6 @@
                         return;
                     }
 
-                    // [안전장치 2] 좌표 유효성 확인
                     const lat = parseFloat(currentCountry.lat);
                     const lng = parseFloat(currentCountry.lng);
                     const zoom = parseFloat(currentCountry.zoom);
@@ -425,8 +438,16 @@
                 descEl.textContent = "국기를 보고 정답을 맞춰보세요!";
                 flagContainer.classList.remove('hidden');
                 
+                // [안전장치] 국기 로딩 에러 처리
                 flagImg.onload = forceStopLoading;
-                
+                flagImg.onerror = () => {
+                    console.warn("Flag failed to load");
+                    forceStopLoading();
+                    flagImg.style.display = 'none'; // 숨김
+                    descEl.textContent = "국기 이미지를 불러올 수 없습니다. 이름만 보고 맞춰보세요!";
+                };
+                flagImg.style.display = 'block';
+
                 if (currentCountry.flagUrl) {
                     flagImg.src = currentCountry.flagUrl;
                 } else {
@@ -444,6 +465,7 @@
                 const prompt = `famous landmark architecture of ${capitalEn} ${countryEn}, bright sunny day, 4k travel photography, realistic`;
                 const imageUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}?width=800&height=600&nologo=true&seed=${Math.random()}&model=flux`;
                 
+                // [개선] 핸들러 먼저 등록 후 src 할당
                 landmarkImg.onload = () => {
                     console.log("Landmark loaded");
                     forceStopLoading();
@@ -459,8 +481,12 @@
                 textContainer.classList.remove('hidden');
                 quizIcon.textContent = "🔑";
                 
-                const brandList = safeBrands.map(b => `<div class="brand-card">${b}</div>`).join('');
-                textContent.innerHTML = `<div class="flex flex-wrap justify-center items-center">${brandList}</div>`;
+                if (safeBrands.length === 0) {
+                    textContent.innerHTML = `<p class="text-sm text-slate-600">아직 등록된 키워드가 없습니다.<br/>이름을 보고 맞춰보세요!</p>`;
+                } else {
+                    const brandList = safeBrands.map(b => `<div class="brand-card">${b}</div>`).join('');
+                    textContent.innerHTML = `<div class="flex flex-wrap justify-center items-center">${brandList}</div>`;
+                }
                 forceStopLoading();
             }
         }
@@ -478,8 +504,8 @@
                     const btn = document.createElement('button');
                     btn.className = "option-btn bg-white hover:bg-slate-50 border-2 border-slate-200 text-slate-700 font-semibold py-4 px-2 rounded-lg shadow-sm transition-all active:scale-95 text-sm sm:text-base break-keep";
                     
-                    const btnText = option.name.includes('(') ? option.name.split('(')[0] : option.name;
-                    btn.textContent = btnText;
+                    const namePair = splitNamePair(option.name);
+                    btn.textContent = namePair.ko;
                     
                     btn.onclick = () => checkAnswer(option, btn);
                     container.appendChild(btn);
@@ -494,6 +520,9 @@
             isAnswered = true;
             const container = document.getElementById('options-container');
 
+            const selectedNamePair = splitNamePair(selected.name);
+            const currentNamePair = splitNamePair(currentCountry.name);
+
             if (selected.name === currentCountry.name) {
                 score += 10;
                 document.getElementById('score').textContent = score;
@@ -507,10 +536,8 @@
                 btnElement.classList.add('bg-red-100', 'border-red-500', 'text-red-700');
                 
                 const buttons = container.getElementsByTagName('button');
-                const correctName = currentCountry.name.includes('(') ? currentCountry.name.split('(')[0] : currentCountry.name;
-                
                 for (let btn of buttons) {
-                    if (btn.textContent === correctName) {
+                    if (btn.textContent === currentNamePair.ko) {
                         btn.classList.add('bg-green-100', 'border-green-500', 'text-green-700');
                     }
                 }
@@ -528,9 +555,11 @@
             const desc = document.getElementById('modal-desc');
             const fallbackLink = document.getElementById('video-fallback-link');
 
-            const countryKo = country.name.split('(')[0].trim();
-            const countryEn = country.name.includes('(') ? country.name.split('(')[1].replace(')', '').trim() : '';
-            const capitalKo = country.capital.split('(')[0].trim();
+            const namePair = splitNamePair(country.name);
+            const capitalPair = splitNamePair(country.capital);
+            const countryKo = namePair.ko;
+            const countryEn = namePair.en;
+            const capitalKo = capitalPair.ko;
 
             title.textContent = `${countryKo} 여행을 떠나볼까요?`;
 
