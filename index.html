@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>투어메이커 - 세계 여행 마스터 (Expert Mode)</title>
+    <title>투어메이커 - 세계 여행 마스터 (Legend Mode)</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Leaflet CSS -->
@@ -15,7 +15,6 @@
         body { font-family: 'Noto Sans KR', sans-serif; }
         #map { height: 350px; width: 100%; border-radius: 0.5rem; z-index: 1; }
         
-        /* 이미지 공통 스타일 */
         .quiz-img { 
             height: 280px; 
             width: 100%; 
@@ -62,10 +61,9 @@
     <!-- 헤더 -->
     <header class="w-full bg-white shadow-md p-4 flex justify-between items-center sticky top-0 z-50">
         <div class="flex items-center gap-3">
-            <!-- 투어메이커 로고 -->
             <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgHfgIX70O5k6Anuo0UgALIdaG9jSga9auHu3uyz0uEirylGPAJnjN_qQbvEGMUvPqUQf_g9FMNUHRxlDcUBf4vZ3Mpy4TnA9WxbmzWYK11gt2zuy_Irl4wctNFjcjLyPo0GPXV792o_J7L9guRMuDfeC1gy7USwywjYbECZgzcsHybuGRRAXAnO1eNmP8/s320/logo.png" 
                  alt="Tourmaker Logo" class="h-10 w-auto object-contain">
-            <h1 class="text-xl font-bold text-slate-800 hidden sm:block">World Travel Master <span class="text-red-500 text-sm align-top">Expert</span></h1>
+            <h1 class="text-xl font-bold text-slate-800 hidden sm:block">World Travel <span class="text-purple-600">Legend</span></h1>
         </div>
         <div class="flex items-center gap-4">
             <div class="text-slate-600 font-medium">
@@ -100,7 +98,6 @@
             </div>
 
             <div id="landmark-container" class="w-full h-full hidden flex-col items-center justify-center p-2 bg-slate-100">
-                <!-- JS에서 처리하므로 onerror 제거 -->
                 <img id="landmark-image" src="" alt="Landmark" class="quiz-img w-full object-cover rounded-lg shadow-md">
                 <div class="mt-2 text-xs text-slate-400 font-medium">AI Generated Landmark (Preview)</div>
             </div>
@@ -110,11 +107,10 @@
                 <div id="text-quiz-content" class="w-full"></div>
             </div>
 
-            <!-- 로딩 화면 -->
             <div id="loading" class="absolute inset-0 bg-white/95 z-20 flex flex-col items-center justify-center">
                 <div class="animate-spin rounded-full h-12 w-12 border-b-4 border-blue-600 mb-4"></div>
                 <span class="text-blue-600 font-bold text-lg">다음 여행지로 이동 중...</span>
-                <p class="text-xs text-slate-400 mt-2">잠시만 기다려주세요</p>
+                <p class="text-xs text-slate-400 mt-2">잠시만 기다려주세요 (3초 제한)</p>
                 <button onclick="forceStopLoading()" class="mt-4 px-4 py-2 bg-slate-200 hover:bg-slate-300 rounded text-slate-600 text-xs font-bold">
                     멈췄나요? 여기 클릭
                 </button>
@@ -167,30 +163,74 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 
     <script>
-        // 난이도 상향! 전문가용 국가 데이터 (Official Tourism Video IDs Updated)
+        // 난이도: LEGEND (미승인 국가, 자치령, 어려운 수도 포함)
         const countries = [
-            // Hard Level Countries
+            // --- Legend Level: Unrecognized & Territories ---
+            { 
+                name: "그린란드 (Greenland)", 
+                capital: "누크 (Nuuk)", 
+                brands: ["Royal Greenland", "Inuit Art"], 
+                lat: 64.1, lng: -51.7, zoom: 4, radius: 800000, 
+                code: "gl", // Standard ISO
+                videoId: "SQtbZPlMeU0" 
+            },
+            { 
+                name: "프랑스령 기아나 (French Guiana)", 
+                capital: "카옌 (Cayenne)", 
+                brands: ["Ariane Space", "Devil's Island"], 
+                lat: 3.9, lng: -53.1, zoom: 7, radius: 100000, 
+                code: "gf", // Standard ISO
+                videoId: "kCXy0fyJm5A" 
+            },
+            { 
+                name: "앞하지아 (Abkhazia)", 
+                capital: "수후미 (Sukhumi)", 
+                brands: ["Lake Ritsa", "Wine"], 
+                lat: 43.0, lng: 41.0, zoom: 8, radius: 40000, 
+                code: "ge", 
+                flagUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/27/Flag_of_Abkhazia.svg/320px-Flag_of_Abkhazia.svg.png",
+                videoId: "_16dMF45rhQ" 
+            },
+            { 
+                name: "코소보 (Kosovo)", 
+                capital: "프리슈티나 (Pristina)", 
+                brands: ["Newborn", "Bear Sanctuary"], 
+                lat: 42.6, lng: 20.9, zoom: 8, radius: 40000, 
+                code: "xk", 
+                videoId: "paymsgYoi7Y" 
+            },
+            { 
+                name: "키프로스 (Cyprus)", 
+                capital: "니코시아 (Nicosia)", 
+                brands: ["Halloumi", "Aphrodite"], 
+                lat: 35.1, lng: 33.3, zoom: 8, radius: 50000, 
+                code: "cy", 
+                videoId: "GMNzMWuVzT8" 
+            },
+
+            // --- Hard Level ---
             { name: "가나 (Ghana)", capital: "아크라 (Accra)", brands: ["Cocoa", "Gold", "Kente Cloth"], lat: 7.9, lng: -1.0, zoom: 6, radius: 250000, code: "gh", videoId: "wIE-CxkN5d0" },
             { name: "트리니다드 토바고 (Trinidad & Tobago)", capital: "포트오브스페인 (Port of Spain)", brands: ["Angostura", "Carnival", "Steelpan"], lat: 10.6, lng: -61.2, zoom: 8, radius: 60000, code: "tt", videoId: "fOBg4Y9HxS4" },
-            { name: "바베이도스 (Barbados)", capital: "브리지타운 (Bridgetown)", brands: ["Mount Gay Rum", "Rihanna", "Cricket"], lat: 13.1, lng: -59.5, zoom: 10, radius: 20000, code: "bb", videoId: "CiCqv6VWzHw" },
+            { name: "바베이도스 (Barbados)", capital: "브리지타운 (Bridgetown)", brands: ["Mount Gay Rum", "Rihanna"], lat: 13.1, lng: -59.5, zoom: 10, radius: 20000, code: "bb", videoId: "VBjUb3T_O8w" },
             { name: "파나마 (Panama)", capital: "파나마시티 (Panama City)", brands: ["Panama Canal", "Copa Airlines"], lat: 8.9, lng: -79.5, zoom: 7, radius: 150000, code: "pa", videoId: "OnXI4-fCTcg" },
-            { name: "볼리비아 (Bolivia)", capital: "라파스 (La Paz)", brands: ["Uyuni Salt Flat", "Llama", "Coca Tea"], lat: -16.5, lng: -68.1, zoom: 5, radius: 800000, code: "bo", videoId: "nq8NJBJqZT0" },
-            { name: "미얀마 (Myanmar)", capital: "네피도 (Naypyidaw)", brands: ["Jade", "Ruby", "Bagan", "Teak"], lat: 19.7, lng: 96.1, zoom: 5, radius: 600000, code: "mm", videoId: "bpWbwMoYISk" },
-            { name: "브루나이 (Brunei)", capital: "반다르스리브가완 (Bandar Seri Begawan)", brands: ["Royal Brunei", "Oil & Gas"], lat: 4.9, lng: 114.9, zoom: 9, radius: 40000, code: "bn", videoId: "z2i8f2wTD8k" }, // Updated Video
+            { name: "볼리비아 (Bolivia)", capital: "라파스 (La Paz)", brands: ["Uyuni Salt Flat", "Llama"], lat: -16.5, lng: -68.1, zoom: 5, radius: 800000, code: "bo", videoId: "nq8NJBJqZT0" },
+            { name: "미얀마 (Myanmar)", capital: "네피도 (Naypyidaw)", brands: ["Jade", "Ruby", "Bagan"], lat: 19.7, lng: 96.1, zoom: 5, radius: 600000, code: "mm", videoId: "bpWbwMoYISk" },
+            { name: "브루나이 (Brunei)", capital: "반다르스리브가완 (Bandar Seri Begawan)", brands: ["Royal Brunei", "Oil & Gas"], lat: 4.9, lng: 114.9, zoom: 9, radius: 40000, code: "bn", videoId: "z2i8f2wTD8k" },
             
-            // European & Others
-            { name: "독일 (Germany)", capital: "베를린 (Berlin)", brands: ["BMW", "Adidas", "Mercedes-Benz"], lat: 51.1, lng: 10.4, zoom: 6, radius: 350000, code: "de", videoId: "8DEozJok3U8" }, // Updated Video
-            { name: "모로코 (Morocco)", capital: "라바트 (Rabat)", brands: ["Argan Oil", "Couscous"], lat: 31.7, lng: -7.0, zoom: 5, radius: 500000, code: "ma", videoId: "q1-2-3-4" },
-            { name: "몽골 (Mongolia)", capital: "울란바토르 (Ulaanbaatar)", brands: ["Gobi Cashmere", "Ger"], lat: 46.8, lng: 103.8, zoom: 5, radius: 800000, code: "mn", videoId: "m_n3g5_wE_w" },
-            { name: "에스토니아 (Estonia)", capital: "탈린 (Tallinn)", brands: ["Skype", "Bolt", "e-Residency"], lat: 59.4, lng: 24.7, zoom: 7, radius: 100000, code: "ee", videoId: "7O1pE-s-5-E" },
+            // --- Standard Level ---
+            { name: "독일 (Germany)", capital: "베를린 (Berlin)", brands: ["BMW", "Adidas"], lat: 51.1, lng: 10.4, zoom: 6, radius: 350000, code: "de", videoId: "8DEozJok3U8" },
+            { name: "모로코 (Morocco)", capital: "라바트 (Rabat)", brands: ["Argan Oil", "Couscous"], lat: 31.7, lng: -7.0, zoom: 5, radius: 500000, code: "ma", videoId: "nzD3e3Qr7g8" }, 
+            { name: "몽골 (Mongolia)", capital: "울란바토르 (Ulaanbaatar)", brands: ["Gobi Cashmere", "Ger"], lat: 46.8, lng: 103.8, zoom: 5, radius: 800000, code: "mn", videoId: "GdydPGQ7muI" },
+            { name: "에스토니아 (Estonia)", capital: "탈린 (Tallinn)", brands: ["Skype", "Bolt"], lat: 59.4, lng: 24.7, zoom: 7, radius: 100000, code: "ee", videoId: "-3z-gH-qRyY" },
             { name: "칠레 (Chile)", capital: "산티아고 (Santiago)", brands: ["LATAM Airlines", "Wine"], lat: -35.6, lng: -71.5, zoom: 4, radius: 1500000, code: "cl", videoId: "3e3hXgWj_wE" },
-            { name: "포르투갈 (Portugal)", capital: "리스본 (Lisbon)", brands: ["TAP Air", "Cork"], lat: 39.3, lng: -8.2, zoom: 7, radius: 200000, code: "pt", videoId: "p_w3g5_wE_w" },
-            { name: "뉴질랜드 (New Zealand)", capital: "웰링턴 (Wellington)", brands: ["Zespri", "Air New Zealand"], lat: -40.9, lng: 174.8, zoom: 5, radius: 500000, code: "nz", videoId: "ty1_jSj_g_k" },
-            { name: "이집트 (Egypt)", capital: "카이로 (Cairo)", brands: ["EgyptAir", "Cotton"], lat: 26.8, lng: 30.8, zoom: 6, radius: 500000, code: "eg", videoId: "t3Ww0r_wE_w" },
-            { name: "튀르키예 (Turkey)", capital: "앙카라 (Ankara)", brands: ["Turkish Airlines", "Beko"], lat: 38.9, lng: 35.2, zoom: 6, radius: 600000, code: "tr", videoId: "l8yT0yW6f_M" },
+            { name: "포르투갈 (Portugal)", capital: "리스본 (Lisbon)", brands: ["TAP Air", "Cork"], lat: 39.3, lng: -8.2, zoom: 7, radius: 200000, code: "pt", videoId: "fk2Onka7oBI" },
+            { name: "뉴질랜드 (New Zealand)", capital: "웰링턴 (Wellington)", brands: ["Zespri", "Air New Zealand"], lat: -40.9, lng: 174.8, zoom: 5, radius: 500000, code: "nz", videoId: "fgGYNJ3f7sQ" },
+            { name: "이집트 (Egypt)", capital: "카이로 (Cairo)", brands: ["EgyptAir", "Cotton"], lat: 26.8, lng: 30.8, zoom: 6, radius: 500000, code: "eg", videoId: "9kYbtuKYU-4" },
+            { name: "튀르키예 (Turkey)", capital: "앙카라 (Ankara)", brands: ["Turkish Airlines", "Beko"], lat: 38.9, lng: 35.2, zoom: 6, radius: 600000, code: "tr", videoId: "lECmYlHbqaU" },
             { name: "대한민국 (South Korea)", capital: "서울 (Seoul)", brands: ["Samsung", "Hyundai", "BTS"], lat: 36.5, lng: 127.8, zoom: 6, radius: 250000, code: "kr", videoId: "3P1CnWI62Ik" },
-            { name: "일본 (Japan)", capital: "도쿄 (Tokyo)", brands: ["Sony", "Nintendo"], lat: 36.2, lng: 138.2, zoom: 5, radius: 600000, code: "jp", videoId: "xKkL4c77O14" },
-            { name: "미국 (USA)", capital: "워싱턴 D.C. (Washington D.C.)", brands: ["Apple", "Coca-Cola"], lat: 39.8, lng: -98.5, zoom: 4, radius: 2500000, code: "us", videoId: "h1F7hRz5t3A" }
+            { name: "일본 (Japan)", capital: "도쿄 (Tokyo)", brands: ["Sony", "Nintendo"], lat: 36.2, lng: 138.2, zoom: 5, radius: 600000, code: "jp", videoId: "nhXC2YdyjvU" },
+            { name: "미국 (USA)", capital: "워싱턴 D.C. (Washington D.C.)", brands: ["Apple", "Coca-Cola"], lat: 39.8, lng: -98.5, zoom: 4, radius: 2500000, code: "us", videoId: "iq5KTD0_bck" },
+            { name: "프랑스 (France)", capital: "파리 (Paris)", brands: ["Louis Vuitton", "Chanel", "Renault"], lat: 46.2, lng: 2.2, zoom: 6, radius: 450000, code: "fr", videoId: "-q6iol-BEEw" }
         ];
 
         let map;
@@ -228,7 +268,6 @@
             nextRound();
         }
 
-        // [핵심] 안전한 로딩 종료
         function forceStopLoading() {
             const loader = document.getElementById('loading');
             if (loader && !loader.classList.contains('hidden')) {
@@ -237,12 +276,10 @@
             }
         }
 
-        // [개선] 랜드마크 실패 시 깔끔한 전환
         function handleImageError() {
             console.warn("Landmark image failed, falling back to flag quiz");
             currentType = 'flag';
             updateDisplayForRound(); 
-            // forceStopLoading 호출 불필요: flag 모드에서 이미지 로드 후 해제함
         }
 
         function nextRound() {
@@ -265,7 +302,7 @@
                 container.classList.remove('opacity-50', 'pointer-events-none');
             }
             
-            if (mapCircle) {
+            if (map && mapCircle) {
                 map.removeLayer(mapCircle);
                 mapCircle = null;
             }
@@ -295,7 +332,6 @@
 
             createOptions();
 
-            // [최후 방어] 혹시라도 3초 타이머가 씹히거나 로직이 꼬여도 4초 뒤엔 무조건 품
             setTimeout(() => {
                 forceStopLoading();
             }, 4000);
@@ -316,6 +352,10 @@
             const landmarkImg = document.getElementById('landmark-image'); 
             const quizIcon = document.getElementById('quiz-icon');
 
+            landmarkImg.onload = null;
+            landmarkImg.onerror = null;
+            flagImg.onload = null;
+
             mapContainer.classList.add('hidden');
             flagContainer.classList.add('hidden');
             landmarkContainer.classList.add('hidden'); 
@@ -330,19 +370,51 @@
             const safeBrands = currentCountry.brands || [];
 
             if (currentType === 'map') {
-                badgeEl.textContent = "지도 퀴즈 (난이도 상)";
+                badgeEl.textContent = "지도 퀴즈";
                 badgeEl.className = "inline-block px-3 py-1 rounded-full text-xs font-bold text-white bg-green-600 mb-2";
                 titleEl.textContent = "🌍 이 나라는 어디일까요?";
                 descEl.textContent = "초록색 영역을 보고 나라를 맞춰보세요!";
                 mapContainer.classList.remove('hidden');
                 
                 setTimeout(() => {
-                    map.invalidateSize();
-                    map.flyTo([currentCountry.lat, currentCountry.lng], currentCountry.zoom, { duration: 1.0 });
+                    // [안전장치 1] 지도 객체 확인
+                    if (!map) {
+                        console.error("Map not initialized, fallback");
+                        currentType = 'flag';
+                        updateDisplayForRound();
+                        return;
+                    }
+
+                    // [안전장치 2] 좌표 유효성 확인
+                    const lat = parseFloat(currentCountry.lat);
+                    const lng = parseFloat(currentCountry.lng);
+                    const zoom = parseFloat(currentCountry.zoom);
+
+                    if (isNaN(lat) || isNaN(lng)) {
+                        console.error("Invalid coordinates for:", currentCountry.name);
+                        currentType = 'flag';
+                        updateDisplayForRound();
+                        return;
+                    }
+
+                    try {
+                        map.invalidateSize();
+                        map.flyTo([lat, lng], zoom || 6, { duration: 1.0 });
+                        
+                        if (mapCircle) {
+                            map.removeLayer(mapCircle);
+                        }
+
+                        mapCircle = L.circle([lat, lng], {
+                            color: '#22c55e', fillColor: '#22c55e', fillOpacity: 0.2, radius: currentCountry.radius || 200000 
+                        }).addTo(map);
+                    } catch (err) {
+                        console.error("Leaflet error:", err);
+                        currentType = 'flag';
+                        updateDisplayForRound();
+                        return;
+                    }
                     
-                    mapCircle = L.circle([currentCountry.lat, currentCountry.lng], {
-                        color: '#22c55e', fillColor: '#22c55e', fillOpacity: 0.2, radius: currentCountry.radius 
-                    }).addTo(map);
                     forceStopLoading();
                 }, 800);
             
@@ -352,8 +424,14 @@
                 titleEl.textContent = "🏳️ 이 국기는 어느 나라일까요?";
                 descEl.textContent = "국기를 보고 정답을 맞춰보세요!";
                 flagContainer.classList.remove('hidden');
-                flagImg.src = `https://flagcdn.com/h240/${currentCountry.code}.png`;
-                flagImg.onload = forceStopLoading; 
+                
+                flagImg.onload = forceStopLoading;
+                
+                if (currentCountry.flagUrl) {
+                    flagImg.src = currentCountry.flagUrl;
+                } else {
+                    flagImg.src = `https://flagcdn.com/h240/${currentCountry.code}.png`;
+                }
                 
             } else if (currentType === 'landmark') { 
                 badgeEl.textContent = "랜드마크 퀴즈";
@@ -366,10 +444,12 @@
                 const prompt = `famous landmark architecture of ${capitalEn} ${countryEn}, bright sunny day, 4k travel photography, realistic`;
                 const imageUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}?width=800&height=600&nologo=true&seed=${Math.random()}&model=flux`;
                 
-                // JS에서 에러 핸들러 연결
+                landmarkImg.onload = () => {
+                    console.log("Landmark loaded");
+                    forceStopLoading();
+                };
                 landmarkImg.onerror = handleImageError;
                 landmarkImg.src = imageUrl;
-                landmarkImg.onload = forceStopLoading; 
             
             } else if (currentType === 'brand') {
                 badgeEl.textContent = "키워드 퀴즈";
@@ -441,7 +521,6 @@
             container.classList.add('pointer-events-none');
         }
 
-        // [개선] 모달 표시 로직 정리
         function openModal(country) {
             const modal = document.getElementById('video-modal');
             const iframe = document.getElementById('reward-video');
@@ -458,18 +537,15 @@
             let videoId = country.videoId;
             const isPlaceholder = !videoId || videoId.includes('1-2-3');
 
-            // 텍스트 설정
             if (isPlaceholder) {
-                videoId = "P_upO4tqLTk"; // 기본 영상
+                videoId = "P_upO4tqLTk"; 
                 desc.textContent = `수도: ${capitalKo}\n아직 전용 홍보 영상이 준비되지 않았습니다. 유튜브에서 직접 검색해보세요!`;
             } else {
                 desc.textContent = `수도: ${capitalKo}\n투어메이커가 엄선한 현지 홍보 영상입니다.`;
             }
 
-            // 영상 로드
             iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&rel=0&showinfo=0&modestbranding=1`;
             
-            // 링크 설정
             if (fallbackLink) {
                 if (!isPlaceholder) {
                      fallbackLink.href = `https://www.youtube.com/watch?v=${videoId}`;
