@@ -82,16 +82,24 @@
 <body class="bg-slate-100 min-h-screen flex flex-col items-center">
 
     <!-- 헤더 -->
-    <header class="w-full bg-white shadow-md p-4 flex justify-between items-center sticky top-0 z-50">
-        <div class="flex items-center gap-3">
-            <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgHfgIX70O5k6Anuo0UgALIdaG9jSga9auHu3uyz0uEirylGPAJnjN_qQbvEGMUvPqUQf_g9FMNUHRxlDcUBf4vZ3Mpy4TnA9WxbmzWYK11gt2zuy_Irl4wctNFjcjLyPo0GPXV792o_J7L9guRMuDfeC1gy7USwywjYbECZgzcsHybuGRRAXAnO1eNmP8/s320/logo.png" 
-                 alt="Tourmaker Logo" class="h-10 w-auto object-contain">
-            <div class="flex flex-col">
-                <h1 class="text-lg sm:text-xl font-bold text-slate-800 leading-tight">World Biz <span class="text-red-600">Master</span></h1>
-                <span class="text-xs text-slate-500 font-medium text-blue-600">Family Project (Hell Mode: 8 Choices)</span>
+    <header class="w-full bg-white shadow-md p-4 flex flex-col sm:flex-row justify-between items-center sticky top-0 z-50 gap-2 sm:gap-0">
+        <div class="flex items-center gap-3 w-full sm:w-auto justify-between sm:justify-start">
+            <div class="flex items-center gap-2">
+                <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgHfgIX70O5k6Anuo0UgALIdaG9jSga9auHu3uyz0uEirylGPAJnjN_qQbvEGMUvPqUQf_g9FMNUHRxlDcUBf4vZ3Mpy4TnA9WxbmzWYK11gt2zuy_Irl4wctNFjcjLyPo0GPXV792o_J7L9guRMuDfeC1gy7USwywjYbECZgzcsHybuGRRAXAnO1eNmP8/s320/logo.png" 
+                     alt="Tourmaker Logo" class="h-10 w-auto object-contain">
+                <div class="flex flex-col">
+                    <h1 class="text-lg sm:text-xl font-bold text-slate-800 leading-tight">World Biz <span class="text-red-600">Master</span></h1>
+                    <span class="text-xs text-slate-500 font-medium text-blue-600 hidden sm:inline">Father Sebastian & Son Sungbin</span>
+                </div>
+            </div>
+            
+            <!-- 스톱워치 (모바일 우측 상단 배치) -->
+            <div class="bg-slate-800 text-white px-3 py-1 rounded-md font-mono font-bold text-lg sm:ml-4 shadow-inner border border-slate-600">
+                ⏱️ <span id="stopwatch">00:00</span>
             </div>
         </div>
-        <div class="flex items-center gap-4">
+        
+        <div class="flex items-center gap-4 w-full sm:w-auto justify-end">
             <div class="text-slate-600 font-medium hidden sm:block">
                 LV.<span id="level-display" class="font-bold text-slate-800">1</span>
             </div>
@@ -200,12 +208,12 @@
             <p class="text-white font-bold text-lg mb-6">1,000점 달성 축하합니다!</p>
             
             <div class="bg-white/20 rounded-lg p-4 mb-6 backdrop-blur-sm border border-white/30">
-                <p class="text-white text-sm mb-1">Winner Certificate</p>
-                <p class="text-2xl font-black text-white" id="winner-time"></p>
+                <p class="text-white text-sm mb-1">Clear Time</p>
+                <p class="text-4xl font-black text-white font-mono" id="winner-time">00:00</p>
             </div>
 
             <p class="text-yellow-900 font-bold text-sm mb-6 animate-bounce">
-                지금 바로 투어메이커 대표님께<br>이 화면을 보여주세요!
+                지금 바로 투어메이커 대표님께<br>이 기록을 보여주세요!
             </p>
 
             <button onclick="location.reload()" class="w-full bg-white hover:bg-slate-100 text-yellow-600 font-bold py-3 rounded-xl shadow-lg transition-colors">
@@ -438,6 +446,35 @@
         let prevType = null;
         const GOAL_SCORE = 1000; // 목표 점수
 
+        // 스톱워치 관련 변수
+        let startTime = null;
+        let stopwatchInterval = null;
+        let isRunning = false;
+
+        function startStopwatch() {
+            if (isRunning) return;
+            isRunning = true;
+            startTime = Date.now();
+            stopwatchInterval = setInterval(() => {
+                const now = Date.now();
+                const diff = now - startTime;
+                const minutes = Math.floor(diff / 60000);
+                const seconds = Math.floor((diff % 60000) / 1000);
+                document.getElementById('stopwatch').textContent = 
+                    `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            }, 1000);
+        }
+
+        function stopStopwatch() {
+            isRunning = false;
+            clearInterval(stopwatchInterval);
+            const now = Date.now();
+            const diff = now - startTime;
+            const minutes = Math.floor(diff / 60000);
+            const seconds = Math.floor((diff % 60000) / 1000);
+            return `${minutes.toString().padStart(2, '0')}분 ${seconds.toString().padStart(2, '0')}초`;
+        }
+
         function splitNamePair(fullText) {
             if (!fullText) return { ko: "Unknown", en: "" };
             if (!fullText.includes('(')) return { ko: fullText.trim(), en: "" };
@@ -486,6 +523,7 @@
         }
 
         function startGame() {
+            startStopwatch(); // 게임 시작 시 스톱워치 시작
             nextRound();
         }
 
@@ -745,6 +783,8 @@
                 
                 // [이벤트 모드] 목표 점수 달성 시 우승 모달
                 if (score >= GOAL_SCORE) {
+                    const finalTime = stopStopwatch(); // 타이머 정지 및 기록 저장
+                    document.getElementById('winner-time').textContent = finalTime;
                     setTimeout(() => showVictoryModal(), 500);
                 } else {
                     setTimeout(() => openModal(currentCountry), 500); 
@@ -765,9 +805,6 @@
 
         function showVictoryModal() {
             const victoryModal = document.getElementById('victory-modal');
-            const winnerTime = document.getElementById('winner-time');
-            const now = new Date();
-            winnerTime.textContent = now.toLocaleTimeString();
             victoryModal.classList.remove('hidden');
         }
 
