@@ -3,7 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>투어메이커 - 세계 여행 마스터 (US Legend Mode)</title>
+    <title>투어메이커 - 세계 여행 마스터 (Hell Biz Edition)</title>
+    
+    <!-- 🚨 Google Analytics (GA4) - Tourmaker 통합 관리 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-JLH9GD9SVR"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-JLH9GD9SVR');
+    </script>
+    <!-- // Google Analytics 끝 -->
+
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Leaflet CSS -->
@@ -18,10 +30,17 @@
         .quiz-img { 
             height: 280px; 
             width: 100%; 
-            object-fit: contain; /* 국기 비율 유지를 위해 contain으로 변경 */
+            object-fit: contain;
             border-radius: 0.5rem;
             background-color: #f8fafc;
             border: 1px solid #e2e8f0;
+        }
+
+        .logo-img {
+            max-height: 180px;
+            max-width: 80%;
+            object-fit: contain;
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
         }
         
         .correct-anim { animation: bounce 0.5s; }
@@ -64,8 +83,8 @@
             <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgHfgIX70O5k6Anuo0UgALIdaG9jSga9auHu3uyz0uEirylGPAJnjN_qQbvEGMUvPqUQf_g9FMNUHRxlDcUBf4vZ3Mpy4TnA9WxbmzWYK11gt2zuy_Irl4wctNFjcjLyPo0GPXV792o_J7L9guRMuDfeC1gy7USwywjYbECZgzcsHybuGRRAXAnO1eNmP8/s320/logo.png" 
                  alt="Tourmaker Logo" class="h-10 w-auto object-contain">
             <div class="flex flex-col">
-                <h1 class="text-lg sm:text-xl font-bold text-slate-800 leading-tight">World Travel <span class="text-red-600">US Special</span></h1>
-                <span class="text-xs text-slate-500">With Sungbin</span>
+                <h1 class="text-lg sm:text-xl font-bold text-slate-800 leading-tight">World Biz <span class="text-red-600">HELL</span></h1>
+                <span class="text-xs text-slate-500">Analyst Edition</span>
             </div>
         </div>
         <div class="flex items-center gap-4">
@@ -113,10 +132,18 @@
                 <div id="text-quiz-content" class="w-full"></div>
             </div>
 
+            <div id="logo-quiz-container" class="w-full h-full hidden flex-col items-center justify-center p-6 bg-white text-center">
+                 <div class="text-sm font-bold text-slate-500 mb-4 tracking-widest">HIDDEN CHAMPION</div>
+                 <div class="flex-grow flex items-center justify-center w-full p-4 border border-slate-100 rounded-xl bg-slate-50 shadow-inner">
+                    <img id="company-logo" src="" alt="Company Logo" class="logo-img">
+                 </div>
+                 <div class="mt-4 text-xs text-slate-400">이 로고의 기업은 어느 나라 것일까요?</div>
+            </div>
+
             <div id="loading" class="absolute inset-0 bg-white/95 z-20 flex flex-col items-center justify-center">
                 <div class="animate-spin rounded-full h-12 w-12 border-b-4 border-blue-600 mb-4"></div>
-                <span class="text-blue-600 font-bold text-lg">다음 여행지로 이동 중...</span>
-                <p class="text-xs text-slate-400 mt-2">미국 50개 주 포함 로딩 중 (3초 제한)</p>
+                <span class="text-blue-600 font-bold text-lg">다음 문제 로딩 중...</span>
+                <p class="text-xs text-slate-400 mt-2">히든 챔피언 기업 데이터 로딩 (3초 제한)</p>
                 <button onclick="forceStopLoading()" class="mt-4 px-4 py-2 bg-slate-200 hover:bg-slate-300 rounded text-slate-600 text-xs font-bold">
                     멈췄나요? 여기 클릭
                 </button>
@@ -169,151 +196,117 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 
     <script>
-        // 난이도: LEGEND + US States Edition
-        // isUS: true 속성을 추가하여 미국 주(State)임을 표시
+        // 난이도: HELL + Niche Corporate Edition
         const countries = [
-            // --- 🇺🇸 USA Special: 50 States (Selected Hard & Popular) ---
+            // --- 🇺🇸 USA: Tech Giants & Niche Auto ---
             { 
-                name: "캘리포니아 (California)", 
-                capital: "새크라멘토 (Sacramento)", 
-                brands: ["Hollywood", "Silicon Valley", "Golden Gate"], 
-                lat: 36.77, lng: -119.41, zoom: 6, radius: 250000, 
-                flagUrl: "https://upload.wikimedia.org/wikipedia/commons/0/01/Flag_of_California.svg",
-                videoId: "NIbkqk5Lwts", 
-                isUS: true 
+                name: "미국 (USA)", capital: "워싱턴 D.C.", brands: ["Apple", "Google", "Tesla", "Amazon", "Lockheed Martin"], 
+                lat: 39.8, lng: -98.5, zoom: 4, radius: 2500000, 
+                flagUrl: "https://flagcdn.com/h240/us.png", videoId: "iq5KTD0_bck",
+                logos: [
+                    "https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg", // Apple
+                    "https://upload.wikimedia.org/wikipedia/commons/e/e8/Tesla_logo.png", // Tesla
+                    "https://upload.wikimedia.org/wikipedia/commons/9/9c/Lockheed_Martin_Logo.svg", // Lockheed Martin
+                    // [HELL] Niche & Obscure
+                    "https://upload.wikimedia.org/wikipedia/commons/3/30/Fisker_Inc._logo.svg", // Fisker (Niche EV)
+                    "https://upload.wikimedia.org/wikipedia/commons/8/87/Karma_Automotive_logo.svg", // Karma (Niche Luxury)
+                    "https://upload.wikimedia.org/wikipedia/commons/0/0e/Rivian_logo.svg" // Rivian
+                ]
             },
-            { 
-                name: "텍사스 (Texas)", 
-                capital: "오스틴 (Austin)", 
-                brands: ["NASA Houston", "BBQ", "Lone Star"], 
-                lat: 31.96, lng: -99.90, zoom: 6, radius: 300000, 
-                flagUrl: "https://upload.wikimedia.org/wikipedia/commons/f/f7/Flag_of_Texas.svg",
-                videoId: "y097x_n6gW8", 
-                isUS: true 
-            },
-            { 
-                name: "뉴욕 주 (New York State)", 
-                capital: "올버니 (Albany)", 
-                brands: ["Wall Street", "Broadway", "Niagara Falls"], 
-                lat: 43.29, lng: -74.21, zoom: 7, radius: 150000, 
-                flagUrl: "https://upload.wikimedia.org/wikipedia/commons/1/1a/Flag_of_New_York.svg",
-                videoId: "MtCMtC50gwY", 
-                isUS: true 
-            },
-            { 
-                name: "플로리다 (Florida)", 
-                capital: "탤러해시 (Tallahassee)", 
-                brands: ["Disney World", "Miami Beach", "Alligator"], 
-                lat: 27.66, lng: -81.51, zoom: 6, radius: 200000, 
-                flagUrl: "https://upload.wikimedia.org/wikipedia/commons/f/f7/Flag_of_Florida.svg",
-                videoId: "ZerT21F7fP0", 
-                isUS: true 
-            },
-            { 
-                name: "하와이 (Hawaii)", 
-                capital: "호놀룰루 (Honolulu)", 
-                brands: ["Waikiki", "Aloha", "Volcano"], 
-                lat: 20.79, lng: -156.33, zoom: 7, radius: 100000, 
-                flagUrl: "https://upload.wikimedia.org/wikipedia/commons/e/ef/Flag_of_Hawaii.svg",
-                videoId: "A5iI3bT9HnI", 
-                isUS: true 
-            },
-            { 
-                name: "알래스카 (Alaska)", 
-                capital: "주노 (Juneau)", 
-                brands: ["Glacier", "Aurora", "Grizzly Bear"], 
-                lat: 64.20, lng: -149.49, zoom: 5, radius: 500000, 
-                flagUrl: "https://upload.wikimedia.org/wikipedia/commons/e/e6/Flag_of_Alaska.svg",
-                videoId: "C2t01Yl9SgU", 
-                isUS: true 
-            },
-            { 
-                name: "네바다 (Nevada)", 
-                capital: "카슨시티 (Carson City)", 
-                brands: ["Las Vegas", "Desert", "Casino"], 
-                lat: 38.80, lng: -116.41, zoom: 6, radius: 200000, 
-                flagUrl: "https://upload.wikimedia.org/wikipedia/commons/f/f1/Flag_of_Nevada.svg",
-                videoId: "_8gFpXzZ0E4", 
-                isUS: true 
-            },
-            { 
-                name: "워싱턴 주 (Washington State)", 
-                capital: "올림피아 (Olympia)", 
-                brands: ["Starbucks", "Microsoft", "Seattle"], 
-                lat: 47.75, lng: -120.74, zoom: 7, radius: 150000, 
-                flagUrl: "https://upload.wikimedia.org/wikipedia/commons/5/54/Flag_of_Washington.svg",
-                videoId: "0Y2Q0J-1hls", 
-                isUS: true 
-            },
-            { 
-                name: "콜로라도 (Colorado)", 
-                capital: "덴버 (Denver)", 
-                brands: ["Rocky Mountains", "Skiing", "Aspen"], 
-                lat: 39.55, lng: -105.78, zoom: 7, radius: 200000, 
-                flagUrl: "https://upload.wikimedia.org/wikipedia/commons/4/46/Flag_of_Colorado.svg",
-                videoId: "u6d5Q9-3rOc", 
-                isUS: true 
-            },
-            { 
-                name: "애리조나 (Arizona)", 
-                capital: "피닉스 (Phoenix)", 
-                brands: ["Grand Canyon", "Cactus", "Sedona"], 
-                lat: 34.04, lng: -111.09, zoom: 6, radius: 200000, 
-                flagUrl: "https://upload.wikimedia.org/wikipedia/commons/9/9d/Flag_of_Arizona.svg",
-                videoId: "tKz-3sO8l9o", 
-                isUS: true 
-            },
-
-            // --- Legend Level: Unrecognized & Territories (Existing) ---
-            { 
-                name: "그린란드 (Greenland)", 
-                capital: "누크 (Nuuk)", 
-                brands: ["Royal Greenland", "Inuit Art"], 
-                lat: 64.1, lng: -51.7, zoom: 4, radius: 800000, 
-                flagUrl: "https://upload.wikimedia.org/wikipedia/commons/0/09/Flag_of_Greenland.svg",
-                videoId: "SQtbZPlMeU0" 
-            },
-            { 
-                name: "프랑스령 기아나 (French Guiana)", 
-                capital: "카옌 (Cayenne)", 
-                brands: ["Ariane Space", "Devil's Island"], 
-                lat: 3.9, lng: -53.1, zoom: 7, radius: 100000, 
-                flagUrl: "https://upload.wikimedia.org/wikipedia/commons/2/29/Flag_of_French_Guiana.svg",
-                videoId: "kCXy0fyJm5A" 
-            },
-            { 
-                name: "앞하지아 (Abkhazia)", 
-                capital: "수후미 (Sukhumi)", 
-                brands: ["Lake Ritsa", "Wine"], 
-                lat: 43.0, lng: 41.0, zoom: 8, radius: 40000, 
-                flagUrl: "https://upload.wikimedia.org/wikipedia/commons/2/27/Flag_of_Abkhazia.svg",
-                videoId: "_16dMF45rhQ" 
-            },
-            { 
-                name: "키프로스 (Cyprus)", 
-                capital: "니코시아 (Nicosia)", 
-                brands: ["Halloumi", "Aphrodite"], 
-                lat: 35.1, lng: 33.3, zoom: 8, radius: 50000, 
-                flagUrl: "https://upload.wikimedia.org/wikipedia/commons/d/d4/Flag_of_Cyprus.svg",
-                videoId: "GMNzMWuVzT8" 
-            },
-
-            // --- Hard Level ---
-            { name: "가나 (Ghana)", capital: "아크라 (Accra)", brands: ["Cocoa", "Gold", "Kente Cloth"], lat: 7.9, lng: -1.0, zoom: 6, radius: 250000, flagUrl: "https://flagcdn.com/h240/gh.png", videoId: "wIE-CxkN5d0" },
-            { name: "트리니다드 토바고 (Trinidad & Tobago)", capital: "포트오브스페인 (Port of Spain)", brands: ["Angostura", "Carnival", "Steelpan"], lat: 10.6, lng: -61.2, zoom: 8, radius: 60000, flagUrl: "https://flagcdn.com/h240/tt.png", videoId: "fOBg4Y9HxS4" },
-            { name: "파나마 (Panama)", capital: "파나마시티 (Panama City)", brands: ["Panama Canal", "Copa Airlines"], lat: 8.9, lng: -79.5, zoom: 7, radius: 150000, flagUrl: "https://flagcdn.com/h240/pa.png", videoId: "OnXI4-fCTcg" },
-            { name: "볼리비아 (Bolivia)", capital: "라파스 (La Paz)", brands: ["Uyuni Salt Flat", "Llama", "Coca Tea"], lat: -16.5, lng: -68.1, zoom: 5, radius: 800000, flagUrl: "https://flagcdn.com/h240/bo.png", videoId: "nq8NJBJqZT0" },
-            { name: "미얀마 (Myanmar)", capital: "네피도 (Naypyidaw)", brands: ["Jade", "Ruby", "Bagan", "Teak"], lat: 19.7, lng: 96.1, zoom: 5, radius: 600000, flagUrl: "https://flagcdn.com/h240/mm.png", videoId: "bpWbwMoYISk" },
             
-            // --- Standard Level ---
-            { name: "독일 (Germany)", capital: "베를린 (Berlin)", brands: ["BMW", "Adidas"], lat: 51.1, lng: 10.4, zoom: 6, radius: 350000, flagUrl: "https://flagcdn.com/h240/de.png", videoId: "8DEozJok3U8" },
-            { name: "모로코 (Morocco)", capital: "라바트 (Rabat)", brands: ["Argan Oil", "Couscous"], lat: 31.7, lng: -7.0, zoom: 5, radius: 500000, flagUrl: "https://flagcdn.com/h240/ma.png", videoId: "nzD3e3Qr7g8" }, 
-            { name: "몽골 (Mongolia)", capital: "울란바토르 (Ulaanbaatar)", brands: ["Gobi Cashmere", "Ger"], lat: 46.8, lng: 103.8, zoom: 5, radius: 800000, flagUrl: "https://flagcdn.com/h240/mn.png", videoId: "GdydPGQ7muI" },
-            { name: "칠레 (Chile)", capital: "산티아고 (Santiago)", brands: ["LATAM Airlines", "Wine"], lat: -35.6, lng: -71.5, zoom: 4, radius: 1500000, flagUrl: "https://flagcdn.com/h240/cl.png", videoId: "uq-zfnpxLSw" }, 
-            { name: "포르투갈 (Portugal)", capital: "리스본 (Lisbon)", brands: ["TAP Air", "Cork"], lat: 39.3, lng: -8.2, zoom: 7, radius: 200000, flagUrl: "https://flagcdn.com/h240/pt.png", videoId: "fk2Onka7oBI" },
-            { name: "이집트 (Egypt)", capital: "카이로 (Cairo)", brands: ["EgyptAir", "Cotton"], lat: 26.8, lng: 30.8, zoom: 6, radius: 500000, flagUrl: "https://flagcdn.com/h240/eg.png", videoId: "9kYbtuKYU-4" },
-            { name: "대한민국 (South Korea)", capital: "서울 (Seoul)", brands: ["Samsung", "Hyundai", "BTS"], lat: 36.5, lng: 127.8, zoom: 6, radius: 250000, flagUrl: "https://flagcdn.com/h240/kr.png", videoId: "3P1CnWI62Ik" },
-            { name: "프랑스 (France)", capital: "파리 (Paris)", brands: ["Louis Vuitton", "Chanel", "Renault"], lat: 46.2, lng: 2.2, zoom: 6, radius: 450000, flagUrl: "https://flagcdn.com/h240/fr.png", videoId: "-q6iol-BEEw" }
+            // --- 🇯🇵 Japan: Electronics & Retail ---
+            { 
+                name: "일본 (Japan)", capital: "도쿄", brands: ["Sony", "Nintendo", "Toyota"], 
+                lat: 36.2, lng: 138.2, zoom: 5, radius: 600000, 
+                flagUrl: "https://flagcdn.com/h240/jp.png", videoId: "nhXC2YdyjvU",
+                logos: [
+                    "https://upload.wikimedia.org/wikipedia/commons/c/c3/Sony_logo.svg", // Sony
+                    "https://upload.wikimedia.org/wikipedia/commons/0/0d/Nintendo.svg", // Nintendo
+                    "https://upload.wikimedia.org/wikipedia/commons/f/f0/Don_Quijote_Store_Logo.svg", // Don Quijote
+                ]
+            },
+
+            // --- 🇨🇳 China: Tech, EV & Niche ---
+            { 
+                name: "중국 (China)", capital: "베이징", brands: ["Alibaba", "Tencent", "Xiaomi"], 
+                lat: 35.8, lng: 104.1, zoom: 4, radius: 2000000, 
+                flagUrl: "https://flagcdn.com/h240/cn.png", videoId: "8lq3yG_Hw4E", 
+                logos: [
+                    "https://upload.wikimedia.org/wikipedia/commons/e/e4/Alibaba_Group_logo.svg", // Alibaba
+                    "https://upload.wikimedia.org/wikipedia/commons/a/ae/Xiaomi_logo_%282021-%29.svg", // Xiaomi
+                    // [HELL] Niche Tech
+                    "https://upload.wikimedia.org/wikipedia/commons/c/cb/OnePlus_logo.svg", // OnePlus (Tech enthusiasts know)
+                    "https://upload.wikimedia.org/wikipedia/commons/a/ad/DJI_Logo.svg", // DJI (Drone)
+                    "https://upload.wikimedia.org/wikipedia/commons/e/ec/Xpeng_logo.svg", // Xpeng
+                ]
+            },
+
+            // --- 🇫🇮 Finland: The Fallen King ---
+            {
+                name: "핀란드 (Finland)", capital: "헬싱키", brands: ["Santa Claus", "Sauna", "Xylitol"],
+                lat: 61.9, lng: 25.7, zoom: 5, radius: 300000,
+                flagUrl: "https://flagcdn.com/h240/fi.png", videoId: "M2T1kL5T-6w",
+                logos: [
+                    "https://upload.wikimedia.org/wikipedia/commons/0/02/Nokia_wordmark.svg", // Nokia (Old & New)
+                    "https://upload.wikimedia.org/wikipedia/commons/b/b5/Angry_Birds.svg" // Rovio (Angry Birds)
+                ]
+            },
+
+            // --- 🇵🇱 Poland: Gamer's Heart ---
+            {
+                name: "폴란드 (Poland)", capital: "바르샤바", brands: ["Chopin", "Marie Curie"],
+                lat: 51.9, lng: 19.1, zoom: 6, radius: 250000,
+                flagUrl: "https://flagcdn.com/h240/pl.png", videoId: "J5W_F9vLgXw",
+                logos: [
+                    "https://upload.wikimedia.org/wikipedia/commons/e/e9/CD_Projekt_Red_logo.svg", // CD Projekt Red (Witcher, Cyberpunk)
+                    "https://upload.wikimedia.org/wikipedia/commons/a/ab/Allegro_pl-logo.svg" // Allegro (E-commerce)
+                ]
+            },
+
+            // --- 🇸🇪 Sweden: Hypercar & Furniture ---
+            {
+                name: "스웨덴 (Sweden)", capital: "스톡홀름", brands: ["IKEA", "Spotify"],
+                lat: 60.1, lng: 18.6, zoom: 5, radius: 300000,
+                flagUrl: "https://flagcdn.com/h240/se.png", videoId: "8x2L7lZJ5s8",
+                logos: [
+                    "https://upload.wikimedia.org/wikipedia/commons/c/c5/Ikea_logo.svg", // IKEA
+                    "https://upload.wikimedia.org/wikipedia/commons/1/18/Spotify_logo_with_text.svg", // Spotify
+                    "https://upload.wikimedia.org/wikipedia/commons/4/4c/Koenigsegg_logo.svg" // Koenigsegg (Hypercar Hell Mode)
+                ]
+            },
+
+            // --- 🇰🇷 Korea: Semi & Auto ---
+            { 
+                name: "대한민국 (South Korea)", capital: "서울", brands: ["Samsung", "Hyundai", "LG"], 
+                lat: 36.5, lng: 127.8, zoom: 6, radius: 250000, 
+                flagUrl: "https://flagcdn.com/h240/kr.png", videoId: "3P1CnWI62Ik",
+                logos: [
+                    "https://upload.wikimedia.org/wikipedia/commons/2/24/Samsung_Logo.svg",
+                    "https://upload.wikimedia.org/wikipedia/commons/4/44/Hyundai_Motor_Company_logo.svg",
+                ]
+            },
+
+            // --- 🇩🇪 Germany: Auto ---
+            { 
+                name: "독일 (Germany)", capital: "베를린", brands: ["BMW", "Mercedes-Benz", "Adidas"], 
+                lat: 51.1, lng: 10.4, zoom: 6, radius: 350000, 
+                flagUrl: "https://flagcdn.com/h240/de.png", videoId: "8DEozJok3U8",
+                logos: [
+                    "https://upload.wikimedia.org/wikipedia/commons/4/44/BMW.svg",
+                    "https://upload.wikimedia.org/wikipedia/commons/2/20/Adidas_Logo.svg"
+                ]
+            },
+            
+            // --- Mixed Countries (Previous Data) ---
+            { name: "프랑스 (France)", capital: "파리", brands: ["Louis Vuitton", "Chanel"], lat: 46.2, lng: 2.2, zoom: 6, radius: 450000, flagUrl: "https://flagcdn.com/h240/fr.png", videoId: "-q6iol-BEEw", logos: ["https://upload.wikimedia.org/wikipedia/commons/c/c8/Louis_Vuitton_LV_logo.png"] },
+            { name: "영국 (UK)", capital: "런던", brands: ["BBC", "Dyson"], lat: 55.3, lng: -3.4, zoom: 6, radius: 300000, flagUrl: "https://flagcdn.com/h240/gb.png", videoId: "i9E_Blai8vk", logos: ["https://upload.wikimedia.org/wikipedia/commons/4/42/BBC_Logo_2021.svg"] },
+            
+            // --- US States & Tricky Locations ---
+            { name: "캘리포니아 (California)", capital: "새크라멘토", brands: ["Hollywood"], lat: 36.77, lng: -119.41, zoom: 6, radius: 250000, flagUrl: "https://upload.wikimedia.org/wikipedia/commons/0/01/Flag_of_California.svg", videoId: "NIbkqk5Lwts", isUS: true },
+            { name: "뉴욕 주 (New York)", capital: "올버니", brands: ["Wall Street"], lat: 43.29, lng: -74.21, zoom: 7, radius: 150000, flagUrl: "https://upload.wikimedia.org/wikipedia/commons/1/1a/Flag_of_New_York.svg", videoId: "MtCMtC50gwY", isUS: true },
+            { name: "코소보 (Kosovo)", capital: "프리슈티나", brands: ["Newborn"], lat: 42.6, lng: 20.9, zoom: 8, radius: 40000, flagUrl: "https://upload.wikimedia.org/wikipedia/commons/1/1f/Flag_of_Kosovo.svg", videoId: "YFI7McdQhGc" },
+            { name: "차드 (Chad)", capital: "은자메나", brands: ["Sahara"], lat: 12.13, lng: 15.05, zoom: 6, radius: 400000, flagUrl: "https://upload.wikimedia.org/wikipedia/commons/4/4b/Flag_of_Chad.svg", videoId: "6g2Q3Qy4v5k" },
+            { name: "나우루 (Nauru)", capital: "야렌", brands: ["Phosphate"], lat: -0.52, lng: 166.93, zoom: 13, radius: 5000, flagUrl: "https://upload.wikimedia.org/wikipedia/commons/3/30/Flag_of_Nauru.svg", videoId: "S8_n4xG0wT4" },
         ];
 
         let map;
@@ -324,11 +317,9 @@
         let currentType = ''; 
         let isAnswered = false;
         let safeTimer = null;
-        
         let prevCountryIndex = null;
         let prevType = null;
 
-        // [Helper] 이름 분리 함수
         function splitNamePair(fullText) {
             if (!fullText) return { ko: "Unknown", en: "" };
             if (!fullText.includes('(')) return { ko: fullText.trim(), en: "" };
@@ -337,25 +328,16 @@
             return { ko: koPart.trim(), en: enPart };
         }
 
-        // [New] Wikipedia Image Fetcher
         async function fetchWikiImage(query) {
             try {
                 if (!query) return null;
-                // 위키백과 API 호출 (썸네일 사이즈 600px 요청)
-                // "New York State" -> "New York" for better landmark match if needed, but Capital is safer.
-                // Using Capital for landmarks is generally safer.
                 const url = `https://en.wikipedia.org/w/api.php?action=query&titles=${encodeURIComponent(query)}&prop=pageimages&format=json&pithumbsize=600&origin=*&redirects`;
-                
                 const res = await fetch(url);
                 const data = await res.json();
-                
                 if (!data || !data.query || !data.query.pages) return null;
-                
                 const pages = data.query.pages;
                 const pageId = Object.keys(pages)[0];
-                
                 if (pageId === "-1") return null; 
-                
                 if (pages[pageId].thumbnail && pages[pageId].thumbnail.source) {
                     return pages[pageId].thumbnail.source;
                 }
@@ -371,7 +353,7 @@
                 map = L.map('map', {
                     zoomControl: true, attributionControl: false,
                     dragging: true, scrollWheelZoom: true, doubleClickZoom: true
-                }).setView([39.8, -98.5], 3); // Center on USA roughly
+                }).setView([39.8, -98.5], 3); 
 
                 L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
                     attribution: 'Tiles &copy; Esri', maxZoom: 17
@@ -428,21 +410,36 @@
                 mapCircle = null;
             }
             
-            const types = ['map', 'flag', 'landmark', 'brand'];
+            // 로고가 있는 나라면 로고 퀴즈 확률 UP
             let newType;
-            do {
-                newType = types[Math.floor(Math.random() * types.length)];
-            } while (types.length > 1 && newType === prevType);
-            currentType = newType;
-            prevType = newType;
+            let tempCountry;
             
             let randomIndex;
             do {
                 randomIndex = Math.floor(Math.random() * countries.length);
             } while (countries.length > 1 && randomIndex === prevCountryIndex);
             
+            tempCountry = countries[randomIndex];
+            
+            let availableTypes = ['map', 'flag', 'brand'];
+            
+            // 로고가 있으면 로고 퀴즈 비중을 극도로 높임 (테스트 목적)
+            if (tempCountry.logos && tempCountry.logos.length > 0) {
+                availableTypes.push('logo'); 
+                availableTypes.push('logo'); // x2
+                availableTypes.push('logo'); // x3 (Focus on new feature)
+            }
+            
+            if (tempCountry.capital) availableTypes.push('landmark');
+
+            do {
+                newType = availableTypes[Math.floor(Math.random() * availableTypes.length)];
+            } while (availableTypes.length > 1 && newType === prevType);
+
+            currentType = newType;
+            prevType = newType;
             prevCountryIndex = randomIndex;
-            currentCountry = countries[randomIndex];
+            currentCountry = tempCountry;
 
             try {
                 updateDisplayForRound();
@@ -453,7 +450,6 @@
 
             createOptions();
 
-            // [최후 방어]
             setTimeout(() => {
                 forceStopLoading();
             }, 4000);
@@ -469,24 +465,27 @@
             const flagContainer = document.getElementById('flag-container');
             const landmarkContainer = document.getElementById('landmark-container'); 
             const textContainer = document.getElementById('text-quiz-container');
+            const logoContainer = document.getElementById('logo-quiz-container');
             
             const textContent = document.getElementById('text-quiz-content');
             const flagImg = document.getElementById('flag-image');
             const landmarkImg = document.getElementById('landmark-image'); 
-            const quizIcon = document.getElementById('quiz-icon');
+            const logoImg = document.getElementById('company-logo');
 
             // 핸들러 초기화
             landmarkImg.onload = null;
             landmarkImg.onerror = null;
             flagImg.onload = null;
             flagImg.onerror = null;
+            logoImg.onload = null;
+            logoImg.onerror = null;
 
             mapContainer.classList.add('hidden');
             flagContainer.classList.add('hidden');
             landmarkContainer.classList.add('hidden'); 
             textContainer.classList.add('hidden');
+            logoContainer.classList.add('hidden');
 
-            // US Badge Logic
             if (currentCountry.isUS) {
                 usBadge.classList.remove('hidden');
             } else {
@@ -509,94 +508,47 @@
                 mapContainer.classList.remove('hidden');
                 
                 setTimeout(() => {
-                    if (!map) {
-                        currentType = 'flag';
-                        updateDisplayForRound();
-                        return;
-                    }
-
+                    if (!map) return;
                     const lat = parseFloat(currentCountry.lat);
                     const lng = parseFloat(currentCountry.lng);
                     const zoom = parseFloat(currentCountry.zoom);
-
-                    if (isNaN(lat) || isNaN(lng)) {
-                        currentType = 'flag';
-                        updateDisplayForRound();
-                        return;
-                    }
+                    if (isNaN(lat) || isNaN(lng)) return;
 
                     try {
                         map.invalidateSize();
                         map.flyTo([lat, lng], zoom || 6, { duration: 1.0 });
-                        
-                        if (mapCircle) {
-                            map.removeLayer(mapCircle);
-                        }
-
+                        if (mapCircle) map.removeLayer(mapCircle);
                         mapCircle = L.circle([lat, lng], {
                             color: '#22c55e', fillColor: '#22c55e', fillOpacity: 0.2, radius: currentCountry.radius || 200000 
                         }).addTo(map);
-                    } catch (err) {
-                        currentType = 'flag';
-                        updateDisplayForRound();
-                        return;
-                    }
-                    
+                    } catch (err) {}
                     forceStopLoading();
                 }, 800);
             
             } else if (currentType === 'flag') {
-                badgeEl.textContent = currentCountry.isUS ? "주(State) 깃발 퀴즈" : "국기 퀴즈";
+                badgeEl.textContent = "국기 퀴즈";
                 badgeEl.className = "inline-block px-3 py-1 rounded-full text-xs font-bold text-white bg-red-500 mb-2";
-                titleEl.textContent = currentCountry.isUS ? "🏳️ 어느 주의 깃발일까요?" : "🏳️ 어느 나라 국기일까요?";
+                titleEl.textContent = "🏳️ 어느 나라 국기일까요?";
                 descEl.textContent = "깃발을 보고 정답을 맞춰보세요!";
                 flagContainer.classList.remove('hidden');
-                
                 flagImg.onload = forceStopLoading;
-                flagImg.onerror = () => {
-                    console.warn("Flag failed to load");
-                    forceStopLoading();
-                    flagImg.src = "https://via.placeholder.com/300x200?text=Flag+Not+Found";
-                };
-
+                flagImg.onerror = () => { flagImg.src = "https://via.placeholder.com/300x200"; forceStopLoading(); };
                 flagImg.src = currentCountry.flagUrl;
                 
             } else if (currentType === 'landmark') { 
-                badgeEl.textContent = "랜드마크 퀴즈 (Beta)";
+                badgeEl.textContent = "랜드마크 퀴즈";
                 badgeEl.className = "inline-block px-3 py-1 rounded-full text-xs font-bold text-white bg-purple-600 mb-2";
                 titleEl.textContent = "📸 이 멋진 곳은 어디일까요?";
                 descEl.textContent = `힌트: ${capitalKo}(${capitalEn})의 풍경입니다.`;
-                
                 landmarkContainer.classList.remove('hidden');
                 
-                // Wikipedia API 연동
-                landmarkImg.onload = () => {
-                    forceStopLoading();
-                };
+                landmarkImg.onload = forceStopLoading;
                 landmarkImg.onerror = handleImageError;
-
                 landmarkImg.src = "https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif";
 
-                // For US states, search for the Capital City or famous landmark, NOT the state name (which might return a map)
-                // Using Capital is safer for generating "scenery"
                 fetchWikiImage(capitalEn).then(url => {
-                    if (url) {
-                        landmarkImg.src = url;
-                    } else {
-                        // Fallback: try searching country/state name if capital fails
-                        console.warn("Capital image not found, trying name: " + countryEn);
-                        return fetchWikiImage(countryEn);
-                    }
-                }).then(url => {
-                     if (url) {
-                        landmarkImg.src = url;
-                     } else if (landmarkImg.src.includes('Loading')) {
-                        console.warn("No wiki image found.");
-                        handleImageError();
-                     }
-                }).catch(e => {
-                    console.error("Wiki fetch error", e);
-                    handleImageError();
+                    if (url) landmarkImg.src = url;
+                    else fetchWikiImage(countryEn).then(u => { if(u) landmarkImg.src = u; else handleImageError(); });
                 });
             
             } else if (currentType === 'brand') {
@@ -605,34 +557,43 @@
                 titleEl.textContent = "👜 유명 키워드의 고향은?";
                 descEl.textContent = "이 브랜드나 키워드는 어디 것일까요?";
                 textContainer.classList.remove('hidden');
-                quizIcon.textContent = "🔑";
                 
                 if (safeBrands.length === 0) {
-                    textContent.innerHTML = `<p class="text-sm text-slate-600">아직 등록된 키워드가 없습니다.<br/>이름을 보고 맞춰보세요!</p>`;
+                    textContent.innerHTML = `<p class="text-sm text-slate-600">힌트가 없습니다.</p>`;
                 } else {
                     const brandList = safeBrands.map(b => `<div class="brand-card">${b}</div>`).join('');
                     textContent.innerHTML = `<div class="flex flex-wrap justify-center items-center">${brandList}</div>`;
                 }
                 forceStopLoading();
+
+            } else if (currentType === 'logo') {
+                badgeEl.textContent = "기업 로고 퀴즈 (HELL)";
+                badgeEl.className = "inline-block px-3 py-1 rounded-full text-xs font-bold text-white bg-indigo-600 mb-2";
+                titleEl.textContent = "🏢 이 로고의 주인은?";
+                descEl.textContent = "전 세계 히든 챔피언 기업을 맞춰보세요!";
+                logoContainer.classList.remove('hidden');
+                
+                logoImg.onload = forceStopLoading;
+                logoImg.onerror = () => { 
+                    console.warn("Logo load failed, fallback to brand text");
+                    logoContainer.classList.add('hidden');
+                    currentType = 'brand'; // fallback
+                    updateDisplayForRound();
+                };
+
+                const randomLogo = currentCountry.logos[Math.floor(Math.random() * currentCountry.logos.length)];
+                logoImg.src = randomLogo;
             }
         }
 
         function createOptions() {
             try {
                 let options = [currentCountry];
-                // 옵션 생성 로직 개선: 
-                // 미국 주가 정답일 경우, 오답도 미국 주 위주로 섞으면 더 헷갈림(난이도 상승)
                 let otherCountries;
                 
                 if (currentCountry.isUS) {
-                    // 미국 주만 필터링
                     const usStates = countries.filter(c => c.isUS && c.name !== currentCountry.name);
-                    // 만약 미국 주 데이터가 부족하면 그냥 섞음
-                    if (usStates.length >= 3) {
-                        otherCountries = usStates;
-                    } else {
-                        otherCountries = countries.filter(c => c.name !== currentCountry.name);
-                    }
+                    otherCountries = usStates.length >= 3 ? usStates : countries.filter(c => c.name !== currentCountry.name);
                 } else {
                     otherCountries = countries.filter(c => c.name !== currentCountry.name);
                 }
@@ -645,16 +606,12 @@
                 options.forEach(option => {
                     const btn = document.createElement('button');
                     btn.className = "option-btn bg-white hover:bg-slate-50 border-2 border-slate-200 text-slate-700 font-semibold py-4 px-2 rounded-lg shadow-sm transition-all active:scale-95 text-sm sm:text-base break-keep";
-                    
                     const namePair = splitNamePair(option.name);
                     btn.textContent = namePair.ko;
-                    
                     btn.onclick = () => checkAnswer(option, btn);
                     container.appendChild(btn);
                 });
-            } catch (error) {
-                console.error("Error creating options:", error);
-            }
+            } catch (error) { console.error(error); }
         }
 
         function checkAnswer(selected, btnElement) {
@@ -662,30 +619,21 @@
             isAnswered = true;
             const container = document.getElementById('options-container');
 
-            const selectedNamePair = splitNamePair(selected.name);
-            const currentNamePair = splitNamePair(currentCountry.name);
-
             if (selected.name === currentCountry.name) {
                 score += 10;
                 document.getElementById('score').textContent = score;
                 btnElement.classList.add('bg-green-100', 'border-green-500', 'text-green-700', 'correct-anim');
-                
-                setTimeout(() => {
-                    openModal(currentCountry);
-                }, 500); 
-
+                setTimeout(() => openModal(currentCountry), 500); 
             } else {
                 btnElement.classList.add('bg-red-100', 'border-red-500', 'text-red-700');
-                
+                const namePair = splitNamePair(currentCountry.name);
                 const buttons = container.getElementsByTagName('button');
                 for (let btn of buttons) {
-                    if (btn.textContent === currentNamePair.ko) {
+                    if (btn.textContent === namePair.ko) {
                         btn.classList.add('bg-green-100', 'border-green-500', 'text-green-700');
                     }
                 }
-                setTimeout(() => {
-                    nextRound();
-                }, 2000);
+                setTimeout(() => nextRound(), 2000);
             }
             container.classList.add('pointer-events-none');
         }
@@ -698,40 +646,26 @@
             const fallbackLink = document.getElementById('video-fallback-link');
 
             const namePair = splitNamePair(country.name);
-            const capitalPair = splitNamePair(country.capital);
             const countryKo = namePair.ko;
             const countryEn = namePair.en;
-            const capitalKo = capitalPair.ko;
 
-            title.textContent = `🎉 ${countryKo} 도착!`;
-
-            let videoId = country.videoId;
-            const isPlaceholder = !videoId || videoId.includes('1-2-3');
-
-            // US State Description logic
-            if (country.isUS) {
-                desc.textContent = `미국 ${countryKo}에 오신 것을 환영합니다!\n주도(Capital): ${capitalKo}`;
+            title.textContent = `🎉 ${countryKo} 정답!`;
+            
+            if (currentType === 'logo') {
+                desc.textContent = `대단합니다! 이 기업은 ${countryKo}의 기술력을 상징합니다.`;
+            } else if (country.isUS) {
+                desc.textContent = `미국 ${countryKo}에 오신 것을 환영합니다!`;
             } else {
-                desc.textContent = `수도: ${capitalKo}\n투어메이커가 엄선한 여행지입니다.`;
+                desc.textContent = `${countryKo} 여행을 떠나볼까요?`;
             }
 
-            if (isPlaceholder) {
-                videoId = "P_upO4tqLTk"; 
-            }
-
+            let videoId = country.videoId || "P_upO4tqLTk";
             iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&rel=0&showinfo=0&modestbranding=1`;
             
             if (fallbackLink) {
-                if (!isPlaceholder) {
-                     fallbackLink.href = `https://www.youtube.com/watch?v=${videoId}`;
-                     fallbackLink.textContent = "📺 영상이 안 나오나요? 유튜브 앱에서 보기";
-                } else {
-                     const query = countryEn || countryKo;
-                     fallbackLink.href = `https://www.youtube.com/results?search_query=travel+${encodeURIComponent(query)}`;
-                     fallbackLink.textContent = "📺 더 많은 영상 검색하기";
-                }
+                fallbackLink.href = `https://www.youtube.com/results?search_query=travel+${encodeURIComponent(countryEn || countryKo)}`;
+                fallbackLink.textContent = "📺 더 많은 영상 검색하기";
             }
-
             modal.classList.remove('hidden');
         }
 
@@ -740,10 +674,7 @@
             const iframe = document.getElementById('reward-video');
             iframe.src = ""; 
             modal.classList.add('hidden');
-            
-            if(isAnswered) {
-                 nextRound();
-            }
+            if(isAnswered) nextRound();
         }
 
         window.onload = initMap;
