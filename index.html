@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>투어메이커 - 세계 여행 마스터 (Hell Mode + Rare Flags)</title>
+    <title>투어메이커 - 세계 여행 마스터 (CEO Ultimate Edition)</title>
     
     <!-- 🚨 Google Analytics (GA4) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-JLH9GD9SVR"></script>
@@ -141,7 +141,7 @@
             <div id="loading" class="absolute inset-0 bg-white/95 z-20 flex flex-col items-center justify-center">
                 <div class="animate-spin rounded-full h-12 w-12 border-b-4 border-blue-600 mb-4"></div>
                 <span class="text-blue-600 font-bold text-lg">다음 문제 로딩 중...</span>
-                <p class="text-xs text-slate-400 mt-2">희귀 국기 데이터 로딩 중 (3초 제한)</p>
+                <p class="text-xs text-slate-400 mt-2">영상 데이터 업데이트 중 (3초 제한)</p>
                 <button onclick="forceStopLoading()" class="mt-4 px-4 py-2 bg-slate-200 hover:bg-slate-300 rounded text-slate-600 text-xs font-bold">
                     멈췄나요? 여기 클릭
                 </button>
@@ -198,7 +198,7 @@
         // 난이도: HELL + RARE FLAGS
         const countries = [
             // ==========================================
-            // [SECTION 1] USA SPECIAL (Updated Videos)
+            // [SECTION 1] USA SPECIAL
             // ==========================================
             { 
                 name: "미국 (USA)", capital: "워싱턴 D.C.", brands: ["Apple", "Google", "Tesla", "Nvidia"], 
@@ -215,21 +215,21 @@
                 name: "캘리포니아 (California)", capital: "새크라멘토", brands: ["Hollywood", "Silicon Valley"], 
                 lat: 36.77, lng: -119.41, zoom: 6, radius: 250000, 
                 flagUrl: "https://upload.wikimedia.org/wikipedia/commons/0/01/Flag_of_California.svg", 
-                videoId: "_GBozUXgFe0", // [Updated]
+                videoId: "_GBozUXgFe0", 
                 isUS: true 
             },
             { 
                 name: "워싱턴 주 (Washington)", capital: "올림피아", brands: ["Starbucks", "Microsoft", "Amazon HQ"], 
                 lat: 47.75, lng: -120.74, zoom: 7, radius: 150000, 
                 flagUrl: "https://upload.wikimedia.org/wikipedia/commons/5/54/Flag_of_Washington.svg", 
-                videoId: "laCEqO_HBKo", // [Updated]
+                videoId: "laCEqO_HBKo", 
                 isUS: true 
             },
             { 
                 name: "하와이 (Hawaii)", capital: "호놀룰루", brands: ["Waikiki", "Aloha"], 
                 lat: 20.79, lng: -156.33, zoom: 7, radius: 100000, 
                 flagUrl: "https://upload.wikimedia.org/wikipedia/commons/e/ef/Flag_of_Hawaii.svg", 
-                videoId: "qkCoDOQFE2Q", // [Updated]
+                videoId: "qkCoDOQFE2Q", 
                 isUS: true 
             },
             { 
@@ -248,16 +248,65 @@
             },
 
             // ==========================================
-            // [SECTION 2] RARE & UNKNOWN FLAGS (HELL)
+            // [SECTION 2] UPDATED COUNTRIES (User Request)
             // ==========================================
             { 
-                name: "키르기스스탄 (Kyrgyzstan)", capital: "비슈케크", brands: ["Yurt", "Central Asia", "Mountains"], 
+                name: "태국 (Thailand)", capital: "방콕", brands: ["Pad Thai", "Red Bull", "Elephant"], 
+                lat: 15.8, lng: 100.9, zoom: 6, radius: 300000, 
+                flagUrl: "https://flagcdn.com/h240/th.png", 
+                videoId: "GiwMY-e69Tk" // [Updated]
+            },
+            { 
+                name: "영국 (UK)", capital: "런던", brands: ["BBC", "Dyson", "Premier League"], 
+                lat: 55.3, lng: -3.4, zoom: 6, radius: 300000, 
+                flagUrl: "https://flagcdn.com/h240/gb.png", 
+                videoId: "ezrfJus7f3g", // [Fixed] Replaced Bali video
+                logos: ["https://upload.wikimedia.org/wikipedia/commons/4/42/BBC_Logo_2021.svg"] 
+            },
+            { 
+                name: "세인트루시아 (Saint Lucia)", capital: "캐스트리스", brands: ["Pitons", "Caribbean"], 
+                lat: 13.9, lng: -60.9, zoom: 10, radius: 30000, 
+                flagUrl: "https://upload.wikimedia.org/wikipedia/commons/9/9f/Flag_of_Saint_Lucia.svg", 
+                videoId: "5dVnxea7388" // [Updated]
+            },
+            { 
+                name: "대만 (Taiwan)", capital: "타이베이", brands: ["TSMC", "ASUS", "Bubble Tea"], 
+                lat: 23.69, lng: 120.96, zoom: 7, radius: 100000, 
+                flagUrl: "https://flagcdn.com/h240/tw.png", 
+                videoId: "H6PlSDVCU2w", // [Updated]
+                logos: ["https://upload.wikimedia.org/wikipedia/commons/2/29/TSMC_logo.svg"] 
+            },
+            { 
+                name: "나우루 (Nauru)", capital: "야렌", brands: ["Phosphate"], 
+                lat: -0.52, lng: 166.93, zoom: 13, radius: 5000, 
+                flagUrl: "https://upload.wikimedia.org/wikipedia/commons/3/30/Flag_of_Nauru.svg", 
+                videoId: "z33fb-yiXic" // [Updated]
+            },
+            { 
+                name: "네덜란드 (Netherlands)", capital: "암스테르담", brands: ["ASML", "Philips", "Heineken"], 
+                lat: 52.1, lng: 5.2, zoom: 7, radius: 150000, 
+                flagUrl: "https://flagcdn.com/h240/nl.png", 
+                videoId: "hqEh0iFWlgs", // [Updated]
+                logos: ["https://upload.wikimedia.org/wikipedia/commons/2/23/ASML_logo.svg"] 
+            },
+            { 
+                name: "에스와티니 (Eswatini)", capital: "음바바네", brands: ["Kingdom", "Culture"], 
+                lat: -26.5, lng: 31.5, zoom: 9, radius: 50000, 
+                flagUrl: "https://upload.wikimedia.org/wikipedia/commons/f/fb/Flag_of_Eswatini.svg", 
+                videoId: "qF3Blsouix4" // [Updated]
+            },
+
+            // ==========================================
+            // [SECTION 3] RARE & UNKNOWN FLAGS (HELL)
+            // ==========================================
+            { 
+                name: "키르기스스탄 (Kyrgyzstan)", capital: "비슈케크", brands: ["Yurt", "Central Asia"], 
                 lat: 41.2, lng: 74.7, zoom: 6, radius: 300000, 
                 flagUrl: "https://upload.wikimedia.org/wikipedia/commons/c/c7/Flag_of_Kyrgyzstan.svg", 
                 videoId: "3k5l6m7n8o9" // Placeholder
             },
             { 
-                name: "부탄 (Bhutan)", capital: "팀푸", brands: ["Dragon", "Happiness", "Himalayas"], 
+                name: "부탄 (Bhutan)", capital: "팀푸", brands: ["Dragon", "Happiness"], 
                 lat: 27.5, lng: 90.4, zoom: 8, radius: 100000, 
                 flagUrl: "https://upload.wikimedia.org/wikipedia/commons/9/91/Flag_of_Bhutan.svg", 
                 videoId: "e2f3g4h5i6j" 
@@ -269,67 +318,47 @@
                 videoId: "7k8l9m0n1o2" 
             },
             { 
-                name: "에스와티니 (Eswatini)", capital: "음바바네", brands: ["Kingdom", "Culture"], 
-                lat: -26.5, lng: 31.5, zoom: 9, radius: 50000, 
-                flagUrl: "https://upload.wikimedia.org/wikipedia/commons/f/fb/Flag_of_Eswatini.svg", 
-                videoId: "1a2b3c4d5e6" 
-            },
-            { 
-                name: "세인트루시아 (Saint Lucia)", capital: "캐스트리스", brands: ["Pitons", "Caribbean"], 
-                lat: 13.9, lng: -60.9, zoom: 10, radius: 30000, 
-                flagUrl: "https://upload.wikimedia.org/wikipedia/commons/9/9f/Flag_of_Saint_Lucia.svg", 
-                videoId: "f1g2h3i4j5k" 
-            },
-            { 
-                name: "앤티가 바부다 (Antigua & Barbuda)", capital: "세인트존스", brands: ["365 Beaches", "Cricket"], 
+                name: "앤티가 바부다 (Antigua & Barbuda)", capital: "세인트존스", brands: ["365 Beaches"], 
                 lat: 17.0, lng: -61.8, zoom: 10, radius: 30000, 
                 flagUrl: "https://upload.wikimedia.org/wikipedia/commons/8/89/Flag_of_Antigua_and_Barbuda.svg", 
                 videoId: "x1y2z3a4b5c" 
             },
 
             // ==========================================
-            // [SECTION 3] UPDATED COUNTRIES (Video Updated)
+            // [SECTION 4] EXISTING COUNTRIES (Video Updated Previously)
             // ==========================================
             { 
                 name: "산마리노 (San Marino)", capital: "산마리노", brands: ["Stamps", "Oldest Republic"], 
                 lat: 43.94, lng: 12.45, zoom: 12, radius: 5000, 
                 flagUrl: "https://flagcdn.com/h240/sm.png", 
-                videoId: "Aisq9uU4OLQ", videoStart: 2 // [Updated] Start at 2s
+                videoId: "Aisq9uU4OLQ", videoStart: 2 
             },
             { 
                 name: "인도 (India)", capital: "뉴델리", brands: ["Tata", "Curry", "Taj Mahal"], 
                 lat: 20.5, lng: 78.9, zoom: 5, radius: 1500000, 
                 flagUrl: "https://flagcdn.com/h240/in.png", 
-                videoId: "wAD9uO9YAQw", // [Updated]
+                videoId: "wAD9uO9YAQw",
                 logos: ["https://upload.wikimedia.org/wikipedia/commons/8/8e/Tata_logo.svg"] 
             },
             { 
                 name: "핀란드 (Finland)", capital: "헬싱키", brands: ["Nokia", "Angry Birds"], 
                 lat: 61.9, lng: 25.7, zoom: 5, radius: 300000, 
                 flagUrl: "https://flagcdn.com/h240/fi.png", 
-                videoId: "o5y7yRsKYxU", // [Updated]
+                videoId: "o5y7yRsKYxU",
                 logos: ["https://upload.wikimedia.org/wikipedia/commons/0/02/Nokia_wordmark.svg"] 
             },
             { 
                 name: "덴마크 (Denmark)", capital: "코펜하겐", brands: ["LEGO", "Maersk", "Hygge"], 
                 lat: 56.2, lng: 9.5, zoom: 7, radius: 150000, 
                 flagUrl: "https://flagcdn.com/h240/dk.png", 
-                videoId: "OkkvuIG-rCE", // [Updated]
+                videoId: "OkkvuIG-rCE",
                 logos: ["https://upload.wikimedia.org/wikipedia/commons/2/24/LEGO_logo.svg"] 
             },
-
-            // ==========================================
-            // [SECTION 4] EXISTING TECH & OTHERS
-            // ==========================================
-            { name: "대만 (Taiwan)", capital: "타이베이", brands: ["TSMC", "ASUS"], lat: 23.69, lng: 120.96, zoom: 7, radius: 100000, flagUrl: "https://flagcdn.com/h240/tw.png", videoId: "3k5l6m7n8o9", logos: ["https://upload.wikimedia.org/wikipedia/commons/2/29/TSMC_logo.svg"] },
-            { name: "네덜란드 (Netherlands)", capital: "암스테르담", brands: ["ASML", "Philips"], lat: 52.1, lng: 5.2, zoom: 7, radius: 150000, flagUrl: "https://flagcdn.com/h240/nl.png", videoId: "e2f3g4h5i6j", logos: ["https://upload.wikimedia.org/wikipedia/commons/2/23/ASML_logo.svg"] },
             { name: "일본 (Japan)", capital: "도쿄", brands: ["Sony", "Nintendo", "Toyota"], lat: 36.2, lng: 138.2, zoom: 5, radius: 600000, flagUrl: "https://flagcdn.com/h240/jp.png", videoId: "nhXC2YdyjvU", logos: ["https://upload.wikimedia.org/wikipedia/commons/c/c3/Sony_logo.svg"] },
             { name: "중국 (China)", capital: "베이징", brands: ["Alibaba", "DJI", "BYD"], lat: 35.8, lng: 104.1, zoom: 4, radius: 2000000, flagUrl: "https://flagcdn.com/h240/cn.png", videoId: "8lq3yG_Hw4E", logos: ["https://upload.wikimedia.org/wikipedia/commons/a/ad/DJI_Logo.svg"] },
             { name: "대한민국 (Korea)", capital: "서울", brands: ["Samsung", "Hyundai", "BTS"], lat: 36.5, lng: 127.8, zoom: 6, radius: 250000, flagUrl: "https://flagcdn.com/h240/kr.png", videoId: "3P1CnWI62Ik", logos: ["https://upload.wikimedia.org/wikipedia/commons/2/24/Samsung_Logo.svg"] },
-            { name: "영국 (UK)", capital: "런던", brands: ["BBC", "Dyson"], lat: 55.3, lng: -3.4, zoom: 6, radius: 300000, flagUrl: "https://flagcdn.com/h240/gb.png", videoId: "i9E_Blai8vk", logos: ["https://upload.wikimedia.org/wikipedia/commons/4/42/BBC_Logo_2021.svg"] },
             { name: "프랑스 (France)", capital: "파리", brands: ["Louis Vuitton", "Airbus"], lat: 46.2, lng: 2.2, zoom: 6, radius: 450000, flagUrl: "https://flagcdn.com/h240/fr.png", videoId: "-q6iol-BEEw", logos: ["https://upload.wikimedia.org/wikipedia/commons/c/c8/Louis_Vuitton_LV_logo.png"] },
             { name: "독일 (Germany)", capital: "베를린", brands: ["BMW", "SAP"], lat: 51.1, lng: 10.4, zoom: 6, radius: 350000, flagUrl: "https://flagcdn.com/h240/de.png", videoId: "8DEozJok3U8", logos: ["https://upload.wikimedia.org/wikipedia/commons/4/44/BMW.svg"] },
-            { name: "나우루 (Nauru)", capital: "야렌", brands: ["Phosphate"], lat: -0.52, lng: 166.93, zoom: 13, radius: 5000, flagUrl: "https://upload.wikimedia.org/wikipedia/commons/3/30/Flag_of_Nauru.svg", videoId: "S8_n4xG0wT4" },
             { name: "코소보 (Kosovo)", capital: "프리슈티나", brands: ["Newborn"], lat: 42.6, lng: 20.9, zoom: 8, radius: 40000, flagUrl: "https://upload.wikimedia.org/wikipedia/commons/1/1f/Flag_of_Kosovo.svg", videoId: "YFI7McdQhGc" }
         ];
 
