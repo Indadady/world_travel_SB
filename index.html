@@ -3,18 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>투어메이커 - 세계 여행 마스터 (Hell Biz Edition)</title>
+    <title>투어메이커 - 세계 여행 마스터 (CEO Ultimate Edition)</title>
     
-    <!-- 🚨 Google Analytics (GA4) - Tourmaker 통합 관리 -->
+    <!-- 🚨 Google Analytics (GA4) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-JLH9GD9SVR"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-
       gtag('config', 'G-JLH9GD9SVR');
     </script>
-    <!-- // Google Analytics 끝 -->
 
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -53,7 +51,8 @@
         .video-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; background: #000; }
         .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
         
-        .option-btn { min-height: 60px; }
+        /* 6지선다형을 위한 그리드 조정 */
+        .option-btn { min-height: 60px; font-size: 0.95rem; }
 
         .brand-card {
             font-family: 'Roboto Slab', serif;
@@ -63,15 +62,14 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            padding: 0.8rem 1.2rem;
-            margin: 0.3rem;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            font-size: 1.0rem;
+            padding: 0.6rem 1.0rem;
+            margin: 0.2rem;
+            border-radius: 6px;
+            box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.1);
+            font-size: 0.9rem;
             font-weight: 800;
             text-transform: uppercase;
             letter-spacing: 0.05em;
-            transition: transform 0.2s;
         }
     </style>
 </head>
@@ -83,8 +81,8 @@
             <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgHfgIX70O5k6Anuo0UgALIdaG9jSga9auHu3uyz0uEirylGPAJnjN_qQbvEGMUvPqUQf_g9FMNUHRxlDcUBf4vZ3Mpy4TnA9WxbmzWYK11gt2zuy_Irl4wctNFjcjLyPo0GPXV792o_J7L9guRMuDfeC1gy7USwywjYbECZgzcsHybuGRRAXAnO1eNmP8/s320/logo.png" 
                  alt="Tourmaker Logo" class="h-10 w-auto object-contain">
             <div class="flex flex-col">
-                <h1 class="text-lg sm:text-xl font-bold text-slate-800 leading-tight">World Biz <span class="text-red-600">HELL</span></h1>
-                <span class="text-xs text-slate-500">Analyst Edition</span>
+                <h1 class="text-lg sm:text-xl font-bold text-slate-800 leading-tight">World Biz <span class="text-red-600">Ultimate</span></h1>
+                <span class="text-xs text-slate-500">6-Option Hell Mode</span>
             </div>
         </div>
         <div class="flex items-center gap-4">
@@ -98,7 +96,7 @@
     </header>
 
     <!-- 메인 게임 영역 -->
-    <main class="w-full max-w-2xl p-4 flex-grow flex flex-col gap-4">
+    <main class="w-full max-w-3xl p-4 flex-grow flex flex-col gap-4">
         
         <div class="bg-white p-4 rounded-lg shadow-sm border border-slate-200 text-center relative overflow-hidden">
             <div id="us-special-badge" class="hidden absolute top-0 right-0 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded-bl-lg animate-pulse">
@@ -143,14 +141,15 @@
             <div id="loading" class="absolute inset-0 bg-white/95 z-20 flex flex-col items-center justify-center">
                 <div class="animate-spin rounded-full h-12 w-12 border-b-4 border-blue-600 mb-4"></div>
                 <span class="text-blue-600 font-bold text-lg">다음 문제 로딩 중...</span>
-                <p class="text-xs text-slate-400 mt-2">히든 챔피언 기업 데이터 로딩 (3초 제한)</p>
+                <p class="text-xs text-slate-400 mt-2">대규모 데이터베이스 연동 중 (3초 제한)</p>
                 <button onclick="forceStopLoading()" class="mt-4 px-4 py-2 bg-slate-200 hover:bg-slate-300 rounded text-slate-600 text-xs font-bold">
                     멈췄나요? 여기 클릭
                 </button>
             </div>
         </div>
 
-        <div id="options-container" class="grid grid-cols-2 gap-3 mt-2 min-h-[150px]"></div>
+        <!-- 6지선다형 그리드 (모바일 2열, PC 3열) -->
+        <div id="options-container" class="grid grid-cols-2 sm:grid-cols-3 gap-3 mt-2 min-h-[150px]"></div>
 
     </main>
 
@@ -196,117 +195,147 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 
     <script>
-        // 난이도: HELL + Niche Corporate Edition
+        // 난이도: ULTIMATE (Expanded Database + 6 Choices)
         const countries = [
-            // --- 🇺🇸 USA: Tech Giants & Niche Auto ---
+            // ==========================================
+            // [SECTION 1] USA SPECIAL (States & Tech)
+            // ==========================================
             { 
-                name: "미국 (USA)", capital: "워싱턴 D.C.", brands: ["Apple", "Google", "Tesla", "Amazon", "Lockheed Martin"], 
+                name: "미국 (USA)", capital: "워싱턴 D.C.", brands: ["Apple", "Google", "Tesla", "Nvidia", "Intel"], 
                 lat: 39.8, lng: -98.5, zoom: 4, radius: 2500000, 
                 flagUrl: "https://flagcdn.com/h240/us.png", videoId: "iq5KTD0_bck",
                 logos: [
-                    "https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg", // Apple
-                    "https://upload.wikimedia.org/wikipedia/commons/e/e8/Tesla_logo.png", // Tesla
-                    "https://upload.wikimedia.org/wikipedia/commons/9/9c/Lockheed_Martin_Logo.svg", // Lockheed Martin
-                    // [HELL] Niche & Obscure
-                    "https://upload.wikimedia.org/wikipedia/commons/3/30/Fisker_Inc._logo.svg", // Fisker (Niche EV)
-                    "https://upload.wikimedia.org/wikipedia/commons/8/87/Karma_Automotive_logo.svg", // Karma (Niche Luxury)
-                    "https://upload.wikimedia.org/wikipedia/commons/0/0e/Rivian_logo.svg" // Rivian
+                    "https://upload.wikimedia.org/wikipedia/commons/2/f4/Google_2015_logo.svg",
+                    "https://upload.wikimedia.org/wikipedia/commons/e/e8/Tesla_logo.png",
+                    "https://upload.wikimedia.org/wikipedia/commons/a/a4/NVIDIA_logo.svg", // Nvidia
+                    "https://upload.wikimedia.org/wikipedia/commons/c/c9/Intel-logo.svg", // Intel
+                    "https://upload.wikimedia.org/wikipedia/commons/9/9c/Lockheed_Martin_Logo.svg",
+                    "https://upload.wikimedia.org/wikipedia/commons/0/0e/Rivian_logo.svg"
                 ]
             },
+            // [Updated] Nevada & Texas Videos
+            { 
+                name: "네바다 (Nevada)", capital: "카슨시티", brands: ["Las Vegas", "Desert", "Casino"], 
+                lat: 38.80, lng: -116.41, zoom: 6, radius: 200000, 
+                flagUrl: "https://upload.wikimedia.org/wikipedia/commons/f/f1/Flag_of_Nevada.svg", 
+                videoId: "sychpKq7Ioc", videoStart: 9, // [UPDATE] Start at 9s
+                isUS: true 
+            },
+            { 
+                name: "텍사스 (Texas)", capital: "오스틴", brands: ["NASA Houston", "BBQ", "Tesla Giga"], 
+                lat: 31.96, lng: -99.90, zoom: 6, radius: 300000, 
+                flagUrl: "https://upload.wikimedia.org/wikipedia/commons/f/f7/Flag_of_Texas.svg", 
+                videoId: "KzX9kJumv9A", // [UPDATE] New Video
+                isUS: true 
+            },
+            { 
+                name: "캘리포니아 (California)", capital: "새크라멘토", brands: ["Hollywood", "Silicon Valley"], 
+                lat: 36.77, lng: -119.41, zoom: 6, radius: 250000, 
+                flagUrl: "https://upload.wikimedia.org/wikipedia/commons/0/01/Flag_of_California.svg", videoId: "NIbkqk5Lwts", isUS: true 
+            },
+            { 
+                name: "뉴욕 주 (New York)", capital: "올버니", brands: ["Wall Street", "Broadway"], 
+                lat: 43.29, lng: -74.21, zoom: 7, radius: 150000, 
+                flagUrl: "https://upload.wikimedia.org/wikipedia/commons/1/1a/Flag_of_New_York.svg", videoId: "MtCMtC50gwY", isUS: true 
+            },
+            { 
+                name: "하와이 (Hawaii)", capital: "호놀룰루", brands: ["Waikiki", "Aloha"], 
+                lat: 20.79, lng: -156.33, zoom: 7, radius: 100000, 
+                flagUrl: "https://upload.wikimedia.org/wikipedia/commons/e/ef/Flag_of_Hawaii.svg", videoId: "A5iI3bT9HnI", isUS: true 
+            },
+            // [New US States]
+            { name: "일리노이 (Illinois)", capital: "스프링필드", brands: ["Chicago", "Lincoln", "Deep Dish Pizza"], lat: 40.0, lng: -89.0, zoom: 6, radius: 200000, flagUrl: "https://upload.wikimedia.org/wikipedia/commons/0/01/Flag_of_Illinois.svg", videoId: "0Z3-35kZ3mU", isUS: true },
+            { name: "매사추세츠 (Massachusetts)", capital: "보스턴", brands: ["Harvard", "MIT", "Tea Party"], lat: 42.4, lng: -71.3, zoom: 8, radius: 100000, flagUrl: "https://upload.wikimedia.org/wikipedia/commons/f/f2/Flag_of_Massachusetts.svg", videoId: "CFX_P5cX2-Y", isUS: true },
+            { name: "조지아 (Georgia)", capital: "애틀랜타", brands: ["Coca-Cola World", "Peaches", "CNN"], lat: 32.1, lng: -82.9, zoom: 7, radius: 200000, flagUrl: "https://upload.wikimedia.org/wikipedia/commons/5/54/Flag_of_Georgia_%28U.S._state%29.svg", videoId: "3e_4k5l6m7n", isUS: true },
+            { name: "워싱턴 주 (Washington)", capital: "올림피아", brands: ["Starbucks", "Microsoft", "Amazon HQ"], lat: 47.75, lng: -120.74, zoom: 7, radius: 150000, flagUrl: "https://upload.wikimedia.org/wikipedia/commons/5/54/Flag_of_Washington.svg", videoId: "0Y2Q0J-1hls", isUS: true },
+            { name: "플로리다 (Florida)", capital: "탤러해시", brands: ["Disney World", "Miami"], lat: 27.66, lng: -81.51, zoom: 6, radius: 200000, flagUrl: "https://upload.wikimedia.org/wikipedia/commons/f/f7/Flag_of_Florida.svg", videoId: "ZerT21F7fP0", isUS: true },
+
+            // ==========================================
+            // [SECTION 2] GLOBAL TECH & HIDDEN CHAMPIONS
+            // ==========================================
+            { 
+                name: "대만 (Taiwan)", capital: "타이베이", brands: ["TSMC", "ASUS", "Bubble Tea"], 
+                lat: 23.69, lng: 120.96, zoom: 7, radius: 100000, 
+                flagUrl: "https://flagcdn.com/h240/tw.png", videoId: "3k5l6m7n8o9", // Placeholder
+                logos: [
+                    "https://upload.wikimedia.org/wikipedia/commons/2/29/TSMC_logo.svg", // TSMC (Global Chip Leader)
+                    "https://upload.wikimedia.org/wikipedia/commons/2/2e/ASUS_Logo.svg", // ASUS
+                    "https://upload.wikimedia.org/wikipedia/commons/d/df/Acer_2011.svg" // Acer
+                ]
+            },
+            { 
+                name: "네덜란드 (Netherlands)", capital: "암스테르담", brands: ["ASML", "Philips", "Heineken"], 
+                lat: 52.1, lng: 5.2, zoom: 7, radius: 150000, 
+                flagUrl: "https://flagcdn.com/h240/nl.png", videoId: "e2f3g4h5i6j",
+                logos: [
+                    "https://upload.wikimedia.org/wikipedia/commons/2/23/ASML_logo.svg", // ASML (Chip Machines)
+                    "https://upload.wikimedia.org/wikipedia/commons/5/52/Philips_logo_new.svg", // Philips
+                    "https://upload.wikimedia.org/wikipedia/commons/a/ac/Heineken_Logo.svg" // Heineken
+                ]
+            },
+            { 
+                name: "덴마크 (Denmark)", capital: "코펜하겐", brands: ["LEGO", "Maersk", "Hygge"], 
+                lat: 56.2, lng: 9.5, zoom: 7, radius: 150000, 
+                flagUrl: "https://flagcdn.com/h240/dk.png", videoId: "7k8l9m0n1o2",
+                logos: [
+                    "https://upload.wikimedia.org/wikipedia/commons/2/24/LEGO_logo.svg", // LEGO
+                    "https://upload.wikimedia.org/wikipedia/commons/3/36/Maersk_Group_Logo.svg" // Maersk (Shipping)
+                ]
+            },
+            { 
+                name: "스위스 (Switzerland)", capital: "베른", brands: ["Rolex", "Nestle", "UBS"], 
+                lat: 46.8, lng: 8.2, zoom: 7, radius: 100000, 
+                flagUrl: "https://flagcdn.com/h240/ch.png", videoId: "1a2b3c4d5e6",
+                logos: [
+                    "https://upload.wikimedia.org/wikipedia/commons/5/5b/Rolex_logo.svg", // Rolex
+                    "https://upload.wikimedia.org/wikipedia/commons/8/87/Nestl%C3%A9.svg", // Nestle
+                    "https://upload.wikimedia.org/wikipedia/commons/6/63/UBS_Logo.svg" // UBS
+                ]
+            },
+            { 
+                name: "이탈리아 (Italy)", capital: "로마", brands: ["Ferrari", "Prada", "Gucci"], 
+                lat: 41.8, lng: 12.5, zoom: 6, radius: 400000, 
+                flagUrl: "https://flagcdn.com/h240/it.png", videoId: "f1g2h3i4j5k",
+                logos: [
+                    "https://upload.wikimedia.org/wikipedia/en/d/d1/Ferrari-Logo.svg", // Ferrari
+                    "https://upload.wikimedia.org/wikipedia/commons/7/73/Gucci_logo.svg", // Gucci
+                    "https://upload.wikimedia.org/wikipedia/commons/b/b8/Prada-Logo.svg" // Prada
+                ]
+            },
+
+            // ==========================================
+            // [SECTION 3] ASIA & OCEANIA EXPANSION
+            // ==========================================
+            { name: "일본 (Japan)", capital: "도쿄", brands: ["Sony", "Nintendo", "Toyota", "Uniqlo"], lat: 36.2, lng: 138.2, zoom: 5, radius: 600000, flagUrl: "https://flagcdn.com/h240/jp.png", videoId: "nhXC2YdyjvU", logos: ["https://upload.wikimedia.org/wikipedia/commons/c/c3/Sony_logo.svg", "https://upload.wikimedia.org/wikipedia/commons/0/0d/Nintendo.svg"] },
+            { name: "중국 (China)", capital: "베이징", brands: ["Alibaba", "Tencent", "DJI", "BYD"], lat: 35.8, lng: 104.1, zoom: 4, radius: 2000000, flagUrl: "https://flagcdn.com/h240/cn.png", videoId: "8lq3yG_Hw4E", logos: ["https://upload.wikimedia.org/wikipedia/commons/a/ad/DJI_Logo.svg", "https://upload.wikimedia.org/wikipedia/commons/8/85/BYD_Auto_Logo_2022.svg"] },
+            { name: "대한민국 (Korea)", capital: "서울", brands: ["Samsung", "Hyundai", "BTS"], lat: 36.5, lng: 127.8, zoom: 6, radius: 250000, flagUrl: "https://flagcdn.com/h240/kr.png", videoId: "3P1CnWI62Ik", logos: ["https://upload.wikimedia.org/wikipedia/commons/2/24/Samsung_Logo.svg"] },
+            { name: "베트남 (Vietnam)", capital: "하노이", brands: ["Pho", "VinFast", "Ha Long Bay"], lat: 14.0, lng: 108.2, zoom: 6, radius: 300000, flagUrl: "https://flagcdn.com/h240/vn.png", videoId: "J1k2l3m4n5o" },
+            { name: "태국 (Thailand)", capital: "방콕", brands: ["Pad Thai", "Red Bull (Origin)", "Elephant"], lat: 15.8, lng: 100.9, zoom: 6, radius: 300000, flagUrl: "https://flagcdn.com/h240/th.png", videoId: "p6q7r8s9t0u" },
+            { name: "싱가포르 (Singapore)", capital: "싱가포르", brands: ["Shopee", "Marina Bay Sands", "Singapore Airlines"], lat: 1.35, lng: 103.8, zoom: 11, radius: 20000, flagUrl: "https://flagcdn.com/h240/sg.png", videoId: "v1w2x3y4z5a" },
+            { name: "호주 (Australia)", capital: "캔버라", brands: ["Kangaroo", "Opera House", "Qantas"], lat: -25.2, lng: 133.7, zoom: 4, radius: 2000000, flagUrl: "https://flagcdn.com/h240/au.png", videoId: "b1c2d3e4f5g" },
+            { name: "인도 (India)", capital: "뉴델리", brands: ["Tata", "Curry", "Taj Mahal"], lat: 20.5, lng: 78.9, zoom: 5, radius: 1500000, flagUrl: "https://flagcdn.com/h240/in.png", videoId: "h1i2j3k4l5m", logos: ["https://upload.wikimedia.org/wikipedia/commons/8/8e/Tata_logo.svg"] },
+
+            // ==========================================
+            // [SECTION 4] EUROPE EXPANSION
+            // ==========================================
+            { name: "영국 (UK)", capital: "런던", brands: ["BBC", "Dyson", "Premier League"], lat: 55.3, lng: -3.4, zoom: 6, radius: 300000, flagUrl: "https://flagcdn.com/h240/gb.png", videoId: "i9E_Blai8vk", logos: ["https://upload.wikimedia.org/wikipedia/commons/4/42/BBC_Logo_2021.svg"] },
+            { name: "프랑스 (France)", capital: "파리", brands: ["Louis Vuitton", "L'Oreal", "Airbus"], lat: 46.2, lng: 2.2, zoom: 6, radius: 450000, flagUrl: "https://flagcdn.com/h240/fr.png", videoId: "-q6iol-BEEw", logos: ["https://upload.wikimedia.org/wikipedia/commons/c/c8/Louis_Vuitton_LV_logo.png"] },
+            { name: "독일 (Germany)", capital: "베를린", brands: ["BMW", "SAP", "Siemens"], lat: 51.1, lng: 10.4, zoom: 6, radius: 350000, flagUrl: "https://flagcdn.com/h240/de.png", videoId: "8DEozJok3U8", logos: ["https://upload.wikimedia.org/wikipedia/commons/4/44/BMW.svg"] },
+            { name: "스페인 (Spain)", capital: "마드리드", brands: ["Zara", "La Liga", "Paella"], lat: 40.4, lng: -3.7, zoom: 6, radius: 400000, flagUrl: "https://flagcdn.com/h240/es.png", videoId: "n1o2p3q4r5s", logos: ["https://upload.wikimedia.org/wikipedia/commons/f/fd/Zara_Logo.svg"] },
+            { name: "스웨덴 (Sweden)", capital: "스톡홀름", brands: ["IKEA", "Spotify", "Koenigsegg"], lat: 60.1, lng: 18.6, zoom: 5, radius: 300000, flagUrl: "https://flagcdn.com/h240/se.png", videoId: "8x2L7lZJ5s8", logos: ["https://upload.wikimedia.org/wikipedia/commons/c/c5/Ikea_logo.svg"] },
+            { name: "핀란드 (Finland)", capital: "헬싱키", brands: ["Nokia", "Angry Birds"], lat: 61.9, lng: 25.7, zoom: 5, radius: 300000, flagUrl: "https://flagcdn.com/h240/fi.png", videoId: "M2T1kL5T-6w", logos: ["https://upload.wikimedia.org/wikipedia/commons/0/02/Nokia_wordmark.svg"] },
+            { name: "폴란드 (Poland)", capital: "바르샤바", brands: ["CD Projekt Red", "Witcher"], lat: 51.9, lng: 19.1, zoom: 6, radius: 250000, flagUrl: "https://flagcdn.com/h240/pl.png", videoId: "J5W_F9vLgXw", logos: ["https://upload.wikimedia.org/wikipedia/commons/e/e9/CD_Projekt_Red_logo.svg"] },
             
-            // --- 🇯🇵 Japan: Electronics & Retail ---
-            { 
-                name: "일본 (Japan)", capital: "도쿄", brands: ["Sony", "Nintendo", "Toyota"], 
-                lat: 36.2, lng: 138.2, zoom: 5, radius: 600000, 
-                flagUrl: "https://flagcdn.com/h240/jp.png", videoId: "nhXC2YdyjvU",
-                logos: [
-                    "https://upload.wikimedia.org/wikipedia/commons/c/c3/Sony_logo.svg", // Sony
-                    "https://upload.wikimedia.org/wikipedia/commons/0/0d/Nintendo.svg", // Nintendo
-                    "https://upload.wikimedia.org/wikipedia/commons/f/f0/Don_Quijote_Store_Logo.svg", // Don Quijote
-                ]
-            },
-
-            // --- 🇨🇳 China: Tech, EV & Niche ---
-            { 
-                name: "중국 (China)", capital: "베이징", brands: ["Alibaba", "Tencent", "Xiaomi"], 
-                lat: 35.8, lng: 104.1, zoom: 4, radius: 2000000, 
-                flagUrl: "https://flagcdn.com/h240/cn.png", videoId: "8lq3yG_Hw4E", 
-                logos: [
-                    "https://upload.wikimedia.org/wikipedia/commons/e/e4/Alibaba_Group_logo.svg", // Alibaba
-                    "https://upload.wikimedia.org/wikipedia/commons/a/ae/Xiaomi_logo_%282021-%29.svg", // Xiaomi
-                    // [HELL] Niche Tech
-                    "https://upload.wikimedia.org/wikipedia/commons/c/cb/OnePlus_logo.svg", // OnePlus (Tech enthusiasts know)
-                    "https://upload.wikimedia.org/wikipedia/commons/a/ad/DJI_Logo.svg", // DJI (Drone)
-                    "https://upload.wikimedia.org/wikipedia/commons/e/ec/Xpeng_logo.svg", // Xpeng
-                ]
-            },
-
-            // --- 🇫🇮 Finland: The Fallen King ---
-            {
-                name: "핀란드 (Finland)", capital: "헬싱키", brands: ["Santa Claus", "Sauna", "Xylitol"],
-                lat: 61.9, lng: 25.7, zoom: 5, radius: 300000,
-                flagUrl: "https://flagcdn.com/h240/fi.png", videoId: "M2T1kL5T-6w",
-                logos: [
-                    "https://upload.wikimedia.org/wikipedia/commons/0/02/Nokia_wordmark.svg", // Nokia (Old & New)
-                    "https://upload.wikimedia.org/wikipedia/commons/b/b5/Angry_Birds.svg" // Rovio (Angry Birds)
-                ]
-            },
-
-            // --- 🇵🇱 Poland: Gamer's Heart ---
-            {
-                name: "폴란드 (Poland)", capital: "바르샤바", brands: ["Chopin", "Marie Curie"],
-                lat: 51.9, lng: 19.1, zoom: 6, radius: 250000,
-                flagUrl: "https://flagcdn.com/h240/pl.png", videoId: "J5W_F9vLgXw",
-                logos: [
-                    "https://upload.wikimedia.org/wikipedia/commons/e/e9/CD_Projekt_Red_logo.svg", // CD Projekt Red (Witcher, Cyberpunk)
-                    "https://upload.wikimedia.org/wikipedia/commons/a/ab/Allegro_pl-logo.svg" // Allegro (E-commerce)
-                ]
-            },
-
-            // --- 🇸🇪 Sweden: Hypercar & Furniture ---
-            {
-                name: "스웨덴 (Sweden)", capital: "스톡홀름", brands: ["IKEA", "Spotify"],
-                lat: 60.1, lng: 18.6, zoom: 5, radius: 300000,
-                flagUrl: "https://flagcdn.com/h240/se.png", videoId: "8x2L7lZJ5s8",
-                logos: [
-                    "https://upload.wikimedia.org/wikipedia/commons/c/c5/Ikea_logo.svg", // IKEA
-                    "https://upload.wikimedia.org/wikipedia/commons/1/18/Spotify_logo_with_text.svg", // Spotify
-                    "https://upload.wikimedia.org/wikipedia/commons/4/4c/Koenigsegg_logo.svg" // Koenigsegg (Hypercar Hell Mode)
-                ]
-            },
-
-            // --- 🇰🇷 Korea: Semi & Auto ---
-            { 
-                name: "대한민국 (South Korea)", capital: "서울", brands: ["Samsung", "Hyundai", "LG"], 
-                lat: 36.5, lng: 127.8, zoom: 6, radius: 250000, 
-                flagUrl: "https://flagcdn.com/h240/kr.png", videoId: "3P1CnWI62Ik",
-                logos: [
-                    "https://upload.wikimedia.org/wikipedia/commons/2/24/Samsung_Logo.svg",
-                    "https://upload.wikimedia.org/wikipedia/commons/4/44/Hyundai_Motor_Company_logo.svg",
-                ]
-            },
-
-            // --- 🇩🇪 Germany: Auto ---
-            { 
-                name: "독일 (Germany)", capital: "베를린", brands: ["BMW", "Mercedes-Benz", "Adidas"], 
-                lat: 51.1, lng: 10.4, zoom: 6, radius: 350000, 
-                flagUrl: "https://flagcdn.com/h240/de.png", videoId: "8DEozJok3U8",
-                logos: [
-                    "https://upload.wikimedia.org/wikipedia/commons/4/44/BMW.svg",
-                    "https://upload.wikimedia.org/wikipedia/commons/2/20/Adidas_Logo.svg"
-                ]
-            },
-            
-            // --- Mixed Countries (Previous Data) ---
-            { name: "프랑스 (France)", capital: "파리", brands: ["Louis Vuitton", "Chanel"], lat: 46.2, lng: 2.2, zoom: 6, radius: 450000, flagUrl: "https://flagcdn.com/h240/fr.png", videoId: "-q6iol-BEEw", logos: ["https://upload.wikimedia.org/wikipedia/commons/c/c8/Louis_Vuitton_LV_logo.png"] },
-            { name: "영국 (UK)", capital: "런던", brands: ["BBC", "Dyson"], lat: 55.3, lng: -3.4, zoom: 6, radius: 300000, flagUrl: "https://flagcdn.com/h240/gb.png", videoId: "i9E_Blai8vk", logos: ["https://upload.wikimedia.org/wikipedia/commons/4/42/BBC_Logo_2021.svg"] },
-            
-            // --- US States & Tricky Locations ---
-            { name: "캘리포니아 (California)", capital: "새크라멘토", brands: ["Hollywood"], lat: 36.77, lng: -119.41, zoom: 6, radius: 250000, flagUrl: "https://upload.wikimedia.org/wikipedia/commons/0/01/Flag_of_California.svg", videoId: "NIbkqk5Lwts", isUS: true },
-            { name: "뉴욕 주 (New York)", capital: "올버니", brands: ["Wall Street"], lat: 43.29, lng: -74.21, zoom: 7, radius: 150000, flagUrl: "https://upload.wikimedia.org/wikipedia/commons/1/1a/Flag_of_New_York.svg", videoId: "MtCMtC50gwY", isUS: true },
+            // ==========================================
+            // [SECTION 5] HELL LEVEL & OTHERS
+            // ==========================================
             { name: "코소보 (Kosovo)", capital: "프리슈티나", brands: ["Newborn"], lat: 42.6, lng: 20.9, zoom: 8, radius: 40000, flagUrl: "https://upload.wikimedia.org/wikipedia/commons/1/1f/Flag_of_Kosovo.svg", videoId: "YFI7McdQhGc" },
             { name: "차드 (Chad)", capital: "은자메나", brands: ["Sahara"], lat: 12.13, lng: 15.05, zoom: 6, radius: 400000, flagUrl: "https://upload.wikimedia.org/wikipedia/commons/4/4b/Flag_of_Chad.svg", videoId: "6g2Q3Qy4v5k" },
+            { name: "루마니아 (Romania)", capital: "부쿠레슈티", brands: ["Dracula"], lat: 44.42, lng: 26.10, zoom: 6, radius: 250000, flagUrl: "https://upload.wikimedia.org/wikipedia/commons/7/73/Flag_of_Romania.svg", videoId: "2X8_7e7wzYw" },
             { name: "나우루 (Nauru)", capital: "야렌", brands: ["Phosphate"], lat: -0.52, lng: 166.93, zoom: 13, radius: 5000, flagUrl: "https://upload.wikimedia.org/wikipedia/commons/3/30/Flag_of_Nauru.svg", videoId: "S8_n4xG0wT4" },
+            { name: "바티칸 시국 (Vatican City)", capital: "바티칸", brands: ["Pope", "St. Peter's"], lat: 41.90, lng: 12.45, zoom: 16, radius: 500, flagUrl: "https://flagcdn.com/h240/va.png", videoId: "t1u2v3w4x5y" },
+            { name: "리히텐슈타인 (Liechtenstein)", capital: "파두츠", brands: ["False Teeth", "Alpine"], lat: 47.14, lng: 9.52, zoom: 10, radius: 10000, flagUrl: "https://flagcdn.com/h240/li.png", videoId: "z1a2b3c4d5e" },
+            { name: "산마리노 (San Marino)", capital: "산마리노", brands: ["Stamps", "Oldest Republic"], lat: 43.94, lng: 12.45, zoom: 12, radius: 5000, flagUrl: "https://flagcdn.com/h240/sm.png", videoId: "f6g7h8i9j0k" }
         ];
 
         let map;
@@ -410,7 +439,7 @@
                 mapCircle = null;
             }
             
-            // 로고가 있는 나라면 로고 퀴즈 확률 UP
+            // 타입 선택 로직
             let newType;
             let tempCountry;
             
@@ -423,11 +452,10 @@
             
             let availableTypes = ['map', 'flag', 'brand'];
             
-            // 로고가 있으면 로고 퀴즈 비중을 극도로 높임 (테스트 목적)
+            // 로고가 있으면 로고 퀴즈 비중 UP
             if (tempCountry.logos && tempCountry.logos.length > 0) {
                 availableTypes.push('logo'); 
-                availableTypes.push('logo'); // x2
-                availableTypes.push('logo'); // x3 (Focus on new feature)
+                availableTypes.push('logo'); 
             }
             
             if (tempCountry.capital) availableTypes.push('landmark');
@@ -567,7 +595,7 @@
                 forceStopLoading();
 
             } else if (currentType === 'logo') {
-                badgeEl.textContent = "기업 로고 퀴즈 (HELL)";
+                badgeEl.textContent = "기업 로고 퀴즈";
                 badgeEl.className = "inline-block px-3 py-1 rounded-full text-xs font-bold text-white bg-indigo-600 mb-2";
                 titleEl.textContent = "🏢 이 로고의 주인은?";
                 descEl.textContent = "전 세계 히든 챔피언 기업을 맞춰보세요!";
@@ -593,19 +621,21 @@
                 
                 if (currentCountry.isUS) {
                     const usStates = countries.filter(c => c.isUS && c.name !== currentCountry.name);
-                    otherCountries = usStates.length >= 3 ? usStates : countries.filter(c => c.name !== currentCountry.name);
+                    otherCountries = usStates.length >= 6 ? usStates : countries.filter(c => c.name !== currentCountry.name);
                 } else {
                     otherCountries = countries.filter(c => c.name !== currentCountry.name);
                 }
 
-                const shuffledOthers = otherCountries.sort(() => 0.5 - Math.random()).slice(0, 3);
+                // [UPDATE] 6지선다형 (정답 1 + 오답 5)
+                const shuffledOthers = otherCountries.sort(() => 0.5 - Math.random()).slice(0, 5);
                 options = options.concat(shuffledOthers);
                 options.sort(() => 0.5 - Math.random());
 
                 const container = document.getElementById('options-container');
                 options.forEach(option => {
                     const btn = document.createElement('button');
-                    btn.className = "option-btn bg-white hover:bg-slate-50 border-2 border-slate-200 text-slate-700 font-semibold py-4 px-2 rounded-lg shadow-sm transition-all active:scale-95 text-sm sm:text-base break-keep";
+                    // [UI UPDATE] Compact Button for 6 options
+                    btn.className = "option-btn bg-white hover:bg-slate-50 border-2 border-slate-200 text-slate-700 font-semibold py-3 px-2 rounded-lg shadow-sm transition-all active:scale-95 text-sm break-keep";
                     const namePair = splitNamePair(option.name);
                     btn.textContent = namePair.ko;
                     btn.onclick = () => checkAnswer(option, btn);
@@ -652,7 +682,7 @@
             title.textContent = `🎉 ${countryKo} 정답!`;
             
             if (currentType === 'logo') {
-                desc.textContent = `대단합니다! 이 기업은 ${countryKo}의 기술력을 상징합니다.`;
+                desc.textContent = `대단합니다! 이 기업은 ${countryKo}의 자부심입니다.`;
             } else if (country.isUS) {
                 desc.textContent = `미국 ${countryKo}에 오신 것을 환영합니다!`;
             } else {
@@ -660,7 +690,10 @@
             }
 
             let videoId = country.videoId || "P_upO4tqLTk";
-            iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&rel=0&showinfo=0&modestbranding=1`;
+            // [UPDATE] Video Start Time Support
+            const startParam = country.videoStart ? `&start=${country.videoStart}` : "";
+            
+            iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&rel=0&showinfo=0&modestbranding=1${startParam}`;
             
             if (fallbackLink) {
                 fallbackLink.href = `https://www.youtube.com/results?search_query=travel+${encodeURIComponent(countryEn || countryKo)}`;
